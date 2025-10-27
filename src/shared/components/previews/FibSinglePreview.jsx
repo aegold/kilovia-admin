@@ -5,7 +5,12 @@
 
 import React from "react";
 
-export default function FibSinglePreview({ prompt, detail, showAnswer }) {
+export default function FibSinglePreview({
+  prompt,
+  detail,
+  showAnswer,
+  media,
+}) {
   const answer = detail?.answer || "";
   const caseSensitive = detail?.case_sensitive || false;
   const normalizeSpace = detail?.normalize_space !== false;
@@ -16,7 +21,7 @@ export default function FibSinglePreview({ prompt, detail, showAnswer }) {
 
     const parts = prompt.split(/(\[____\])/g);
     return (
-      <div className="text-gray-800 text-base leading-relaxed">
+      <div className="qlbt-question-text">
         {parts.map((part, index) => {
           if (part === "[____]") {
             return (
@@ -42,12 +47,20 @@ export default function FibSinglePreview({ prompt, detail, showAnswer }) {
       {/* Prompt with blank */}
       {renderPrompt()}
 
-      {/* Show answer - always display */}
+      {/* Question Image */}
+      {media && media.length > 0 && media[0].url && (
+        <div className="qlbt-question-image">
+          <img src={media[0].url} alt={media[0].alt || "Hình minh họa"} />
+        </div>
+      )}
+
+      {/* Show answer - always display with green box like MCQ */}
       {answer && (
-        <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-          <div className="text-sm text-green-800">
-            <span className="font-semibold">Đáp án:</span>{" "}
-            <span className="font-mono bg-white px-2 py-1 rounded border">
+        <div className="qlbt-choice-item correct" style={{ marginTop: "1rem" }}>
+          <div className="qlbt-choice-letter">✓</div>
+          <div className="qlbt-choice-text">
+            <span style={{ fontWeight: "600" }}>Đáp án:</span>{" "}
+            <span style={{ fontFamily: "monospace", fontSize: "1.05rem" }}>
               {answer}
             </span>
           </div>

@@ -224,14 +224,27 @@ export default function QuestionEditorShell({
   };
 
   return (
-    <div className="grid gap-4 md:grid-cols-2">
-      <div className="space-y-3">
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: "1.5rem",
+      }}
+    >
+      <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         {/* Action buttons row */}
-        <div className="flex items-center justify-between gap-2">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "0.5rem",
+          }}
+        >
           {onBack && (
             <button
               type="button"
-              className="px-3 py-1 border rounded bg-green-500 text-white hover:bg-green-600"
+              className="qlbt-back-btn-inline"
               onClick={onBack}
             >
               ← Quay lại
@@ -240,9 +253,7 @@ export default function QuestionEditorShell({
 
           <button
             type="button"
-            className={`px-4 py-1 border rounded bg-blue-500 text-white hover:bg-blue-600 ${
-              isSaving ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+            className="qlbt-save-btn-inline"
             onClick={() => {
               try {
                 const env = envelope;
@@ -258,6 +269,10 @@ export default function QuestionEditorShell({
               }
             }}
             disabled={isSaving || !envelope}
+            style={{
+              opacity: isSaving || !envelope ? 0.6 : 1,
+              cursor: isSaving || !envelope ? "not-allowed" : "pointer",
+            }}
           >
             {isSaving
               ? isEditMode
@@ -271,26 +286,54 @@ export default function QuestionEditorShell({
 
         {message && (
           <div
-            className={`text-sm p-2 rounded ${
-              message.includes("❌")
-                ? "bg-red-50 text-red-700"
+            style={{
+              fontSize: "0.875rem",
+              padding: "0.75rem",
+              borderRadius: "8px",
+              backgroundColor: message.includes("❌")
+                ? "#fef2f2"
                 : message.includes("⚠️")
-                ? "bg-yellow-50 text-yellow-700"
-                : "bg-green-50 text-green-700"
-            }`}
+                ? "#fefce8"
+                : "#f0fdf4",
+              color: message.includes("❌")
+                ? "#991b1b"
+                : message.includes("⚠️")
+                ? "#854d0e"
+                : "#166534",
+              border: message.includes("❌")
+                ? "1px solid #fecaca"
+                : message.includes("⚠️")
+                ? "1px solid #fef08a"
+                : "1px solid #bbf7d0",
+            }}
           >
             {message}
           </div>
         )}
 
         {showKindPicker && (
-          <div className="space-y-2">
-            <div className="text-sm">Chọn dạng câu hỏi</div>
+          <div style={{ marginBottom: "1rem" }}>
+            <div
+              style={{
+                fontSize: "0.875rem",
+                marginBottom: "0.5rem",
+                fontWeight: "600",
+                color: "#374151",
+              }}
+            >
+              Chọn dạng câu hỏi
+            </div>
             <KindPicker value={kind} onChange={handleSetKind} />
           </div>
         )}
 
-        <div className="border rounded p-3">
+        <div
+          style={{
+            border: "2px solid #e5e7eb",
+            borderRadius: "12px",
+            padding: "1rem",
+          }}
+        >
           <EditorComponent
             onEnvelopeChange={handleEnvelopeChange}
             onSave={handleSave}
@@ -300,7 +343,13 @@ export default function QuestionEditorShell({
           />
         </div>
 
-        <div className="border rounded p-3">
+        <div
+          style={{
+            border: "2px solid #e5e7eb",
+            borderRadius: "12px",
+            padding: "1rem",
+          }}
+        >
           <JsonPanel
             currentKind={kind}
             onImportValid={handleImport}
@@ -309,7 +358,13 @@ export default function QuestionEditorShell({
         </div>
       </div>
 
-      <div className="border rounded p-3">
+      <div
+        style={{
+          border: "2px solid #e5e7eb",
+          borderRadius: "12px",
+          padding: "1rem",
+        }}
+      >
         <PreviewPanel envelope={envelope} registry={getPreviewRegistry(kind)} />
       </div>
     </div>

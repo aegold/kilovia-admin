@@ -5,16 +5,24 @@
 
 import React from "react";
 
-export default function ImageChoicePreview({ prompt, detail, showAnswer }) {
+export default function ImageChoicePreview({
+  prompt,
+  detail,
+  showAnswer,
+  media,
+}) {
   const options = detail?.options || [];
   const correctOption = options.find((opt) => opt.correct);
 
   return (
     <div className="space-y-4">
       {/* Prompt */}
-      {prompt && (
-        <div className="text-gray-800 text-base leading-relaxed whitespace-pre-wrap">
-          {prompt}
+      {prompt && <div className="qlbt-question-text">{prompt}</div>}
+
+      {/* Question Image */}
+      {media && media.length > 0 && media[0].url && (
+        <div className="qlbt-question-image">
+          <img src={media[0].url} alt={media[0].alt || "Hình minh họa"} />
         </div>
       )}
 
@@ -64,12 +72,14 @@ export default function ImageChoicePreview({ prompt, detail, showAnswer }) {
         ))}
       </div>
 
-      {/* Show answer - always display */}
+      {/* Show answer - always display with green box like MCQ */}
       {correctOption && (
-        <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-          <div className="text-sm text-green-800">
-            <span className="font-semibold">Đáp án:</span> {correctOption.id}
+        <div className="qlbt-choice-item correct" style={{ marginTop: "1rem" }}>
+          <div className="qlbt-choice-letter">{correctOption.id}</div>
+          <div className="qlbt-choice-text">
+            <span style={{ fontWeight: "600" }}>Đáp án đúng</span>
           </div>
+          <div className="qlbt-correct-badge">✓</div>
         </div>
       )}
 

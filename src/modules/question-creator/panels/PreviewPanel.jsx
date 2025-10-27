@@ -1,11 +1,15 @@
-// Placeholder - PreviewPanel
+// PreviewPanel - Question preview component
 import React from "react";
+import "../styles/QLBT_EditorTheme.css";
 
 export default function PreviewPanel({ envelope, registry }) {
   if (!envelope) {
     return (
-      <div className="text-gray-500 text-center p-8">
-        <p>Chưa có dữ liệu preview</p>
+      <div className="qlbt-preview-placeholder">
+        <div className="qlbt-placeholder-content">
+          <div className="qlbt-placeholder-icon">👁️</div>
+          <p style={{ color: "#9ca3af", margin: 0 }}>Chưa có dữ liệu preview</p>
+        </div>
       </div>
     );
   }
@@ -14,19 +18,25 @@ export default function PreviewPanel({ envelope, registry }) {
 
   if (!PreviewComponent) {
     return (
-      <div className="text-gray-500 text-center p-8">
-        <p>Chưa có component preview cho loại này</p>
+      <div className="qlbt-preview-placeholder">
+        <div className="qlbt-placeholder-content">
+          <div className="qlbt-placeholder-icon">⚠️</div>
+          <p style={{ color: "#9ca3af", margin: 0 }}>
+            Chưa có component preview cho loại này
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div>
-      <h3 className="text-lg font-semibold mb-4">Preview</h3>
-      <div className="border rounded-lg p-4 bg-white">
+    <div className="qlbt-preview-section">
+      <div className="qlbt-section-title">👁️ Xem trước</div>
+      <div className="qlbt-preview-content">
         <PreviewComponent
           prompt={envelope.prompt}
           detail={envelope.detail}
+          media={envelope.media}
           showAnswer={true}
         />
       </div>

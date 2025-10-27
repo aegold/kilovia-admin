@@ -292,8 +292,8 @@ const QuestionTable = ({
                       <span className="kind-label">{kindInfo.label}</span>
                     </div>
                   </td>
-                  <td className="col-prompt" title={question.prompt}>
-                    {truncate(question.prompt, 80)}
+                  <td className="col-prompt" title={question.prompt || ""}>
+                    {truncate(question.prompt || "-", 80)}
                   </td>
                   <td className="col-answer" title={getAnswerDisplay(question)}>
                     {truncate(getAnswerDisplay(question), 40)}

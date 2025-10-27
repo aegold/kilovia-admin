@@ -5,7 +5,12 @@
 
 import React from "react";
 
-export default function ExpressionPreview({ prompt, detail, showAnswer }) {
+export default function ExpressionPreview({
+  prompt,
+  detail,
+  showAnswer,
+  media,
+}) {
   const operation = detail?.operation || "multiplication";
   const operand1 = detail?.operand1 || "";
   const operand2 = detail?.operand2 || "";
@@ -44,58 +49,124 @@ export default function ExpressionPreview({ prompt, detail, showAnswer }) {
 
   const renderField = (value, isBlankField, label) => {
     if (!isBlankField) {
-      return <span className="font-bold text-2xl text-gray-800">{value}</span>;
+      return (
+        <span
+          style={{
+            fontWeight: "700",
+            fontSize: "1.5rem",
+            color: "#1f2937",
+          }}
+        >
+          {value}
+        </span>
+      );
     }
 
     // Always show "?" for blank fields
     return (
-      <span className="inline-flex items-center justify-center w-20 h-12 text-3xl font-bold text-blue-400 border-b-3 border-blue-400">
+      <span
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "80px",
+          height: "48px",
+          fontSize: "1.875rem",
+          fontWeight: "700",
+          color: "#60a5fa",
+          borderBottom: "3px solid #60a5fa",
+        }}
+      >
         ?
       </span>
     );
   };
 
   return (
-    <div className="space-y-4">
+    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
       {/* Prompt */}
-      {prompt && (
-        <div className="text-gray-800 text-base leading-relaxed mb-4">
-          {prompt}
+      {prompt && <div className="qlbt-question-text">{prompt}</div>}
+
+      {/* Question Image */}
+      {media && media.length > 0 && media[0].url && (
+        <div className="qlbt-question-image">
+          <img src={media[0].url} alt={media[0].alt || "Hình minh họa"} />
         </div>
       )}
 
       {/* Expression Display */}
-      <div className="flex justify-center">
-        <div className="inline-flex items-center gap-4 p-8 bg-white border-2 border-gray-300 rounded-lg shadow-sm">
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <div
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "1rem",
+            padding: "2rem",
+            backgroundColor: "white",
+            border: "2px solid #d1d5db",
+            borderRadius: "8px",
+            boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+          }}
+        >
           {/* Operand 1 */}
           {renderField(operand1, isBlank.operand1, "Số hạng 1")}
 
           {/* Operator */}
-          <span className="text-3xl font-bold text-blue-600">{symbol}</span>
+          <span
+            style={{
+              fontSize: "1.875rem",
+              fontWeight: "700",
+              color: "#2563eb",
+            }}
+          >
+            {symbol}
+          </span>
 
           {/* Operand 2 */}
           {renderField(operand2, isBlank.operand2, "Số hạng 2")}
 
           {/* Equal sign */}
-          <span className="text-3xl font-bold text-gray-600">=</span>
+          <span
+            style={{
+              fontSize: "1.875rem",
+              fontWeight: "700",
+              color: "#4b5563",
+            }}
+          >
+            =
+          </span>
 
           {/* Result */}
           {renderField(result, isBlank.result, "Kết quả")}
         </div>
       </div>
 
-      {/* Show answers - always display full answer */}
-      <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-        <div className="text-sm text-green-800">
-          <span className="font-semibold">Đáp án:</span>
-          <div className="mt-2 font-mono text-base">
+      {/* Show answers - always display with green box like MCQ */}
+      <div className="qlbt-choice-item correct" style={{ marginTop: "1rem" }}>
+        <div className="qlbt-choice-letter">✓</div>
+        <div className="qlbt-choice-text">
+          <span style={{ fontWeight: "600" }}>Đáp án:</span>{" "}
+          <span
+            style={{
+              fontFamily: "monospace",
+              fontSize: "1.1rem",
+              fontWeight: "600",
+            }}
+          >
             {operand1} {symbol} {operand2} = {result}
-          </div>
+          </span>
         </div>
       </div>
 
       {/* Mode description */}
-      <div className="text-xs text-gray-500 text-center italic">
+      <div
+        style={{
+          fontSize: "0.75rem",
+          color: "#6b7280",
+          textAlign: "center",
+          fontStyle: "italic",
+        }}
+      >
         {mode === "blank_result" && `Tìm kết quả`}
         {mode === "blank_operand1" && `Tìm số hạng 1`}
         {mode === "blank_operand2" && `Tìm số hạng 2`}
@@ -105,8 +176,24 @@ export default function ExpressionPreview({ prompt, detail, showAnswer }) {
 
       {/* Hint for multiple blanks */}
       {(mode === "blank_both_operands" || mode === "blank_all") && (
-        <div className="mt-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-          <div className="text-sm text-yellow-800 flex items-center gap-2">
+        <div
+          style={{
+            marginTop: "0.5rem",
+            padding: "0.75rem",
+            backgroundColor: "#fefce8",
+            border: "1px solid #fde047",
+            borderRadius: "8px",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "0.875rem",
+              color: "#854d0e",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+            }}
+          >
             <span>💡</span>
             <span>Nên có hình ảnh đi kèm để gợi ý cho học sinh</span>
           </div>

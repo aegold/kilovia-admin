@@ -5,7 +5,12 @@
 
 import React from "react";
 
-export default function MultipleFillInPreview({ prompt, detail, showAnswer }) {
+export default function MultipleFillInPreview({
+  prompt,
+  detail,
+  showAnswer,
+  media,
+}) {
   const blocks = detail?.blocks || [];
   const answers = detail?.answers || [];
 
@@ -15,7 +20,9 @@ export default function MultipleFillInPreview({ prompt, detail, showAnswer }) {
         return (
           <div
             key={index}
-            className={`text-gray-800 ${block.down_line ? "mb-3" : "mb-2"}`}
+            className={`qlbt-question-text ${
+              block.down_line ? "mb-3" : "mb-2"
+            }`}
           >
             {block.content}
           </div>
@@ -38,29 +45,48 @@ export default function MultipleFillInPreview({ prompt, detail, showAnswer }) {
 
       case "fill-in-group":
         return (
-          <div key={index} className="space-y-3 mb-4">
+          <div key={index} style={{ marginBottom: "1.5rem" }}>
             {(block.items || []).map((item, itemIndex) => {
               const answer = answers.find((a) => a.id === item.input?.id);
               return (
                 <div
                   key={itemIndex}
-                  className={`flex items-center gap-2 flex-wrap ${
-                    item.newLine ? "mt-3" : ""
-                  }`}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    flexWrap: "wrap",
+                    marginTop: item.newLine ? "12px" : "0",
+                    marginBottom: "8px",
+                  }}
                 >
                   {item.before && (
-                    <span className="text-gray-800">{item.before}</span>
+                    <span style={{ fontSize: "0.95rem", color: "#374151" }}>
+                      {item.before}
+                    </span>
                   )}
                   <input
                     type={item.input?.type || "text"}
-                    placeholder={item.input?.placeholder || "..."}
-                    value={showAnswer ? answer?.expression || "" : ""}
-                    className="p-2 border border-blue-400 rounded text-center focus:outline-none focus:border-blue-600"
-                    style={{ width: item.input?.width || "80px" }}
+                    placeholder="____"
+                    value=""
+                    style={{
+                      width: item.input?.width || "80px",
+                      padding: "6px 12px",
+                      border: "2px dashed #3b82f6",
+                      borderRadius: "6px",
+                      textAlign: "center",
+                      backgroundColor: "#eff6ff",
+                      fontSize: "0.95rem",
+                      fontWeight: "600",
+                      color: "#1e40af",
+                      outline: "none",
+                    }}
                     readOnly
                   />
                   {item.after && (
-                    <span className="text-gray-800">{item.after}</span>
+                    <span style={{ fontSize: "0.95rem", color: "#374151" }}>
+                      {item.after}
+                    </span>
                   )}
                 </div>
               );
@@ -75,22 +101,43 @@ export default function MultipleFillInPreview({ prompt, detail, showAnswer }) {
 
   return (
     <div className="space-y-4">
+      {/* Additional main image (if provided via media) */}
+      {media && media.length > 0 && media[0].url && (
+        <div className="qlbt-question-image">
+          <img src={media[0].url} alt={media[0].alt || "Hình minh họa"} />
+        </div>
+      )}
+
       {/* Render all blocks */}
       {blocks.map((block, index) => renderBlock(block, index))}
 
-      {/* Show answers - always display */}
+      {/* Show answers - with green boxes like MCQ */}
       {answers.length > 0 && (
-        <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-          <div className="text-sm text-green-800 font-semibold mb-2">
+        <div style={{ marginTop: "1rem" }}>
+          <div
+            className="qlbt-section-title"
+            style={{ marginBottom: "0.75rem" }}
+          >
             Đáp án:
           </div>
-          <div className="space-y-1">
+          <div className="qlbt-choices-container">
             {answers.map((answer, index) => (
-              <div key={index} className="text-sm text-gray-700">
-                <span className="font-mono text-xs bg-white px-2 py-1 rounded border mr-2">
-                  {answer.id}
-                </span>
-                <span className="font-medium">{answer.expression}</span>
+              <div key={index} className="qlbt-choice-item correct">
+                <div className="qlbt-choice-letter">{index + 1}</div>
+                <div className="qlbt-choice-text">
+                  <span
+                    style={{
+                      fontFamily: "monospace",
+                      fontSize: "0.875rem",
+                      color: "#6b7280",
+                      marginRight: "0.5rem",
+                    }}
+                  >
+                    {answer.id}:
+                  </span>
+                  <span style={{ fontWeight: "600" }}>{answer.expression}</span>
+                </div>
+                <div className="qlbt-correct-badge">✓</div>
               </div>
             ))}
           </div>

@@ -182,11 +182,12 @@ export default function MultipleFillInEditor({
   }, [question, questionImage, subQuestion, blanks, hint]);
 
   return (
-    <div className="qlbt-card space-y-4">
-      <div className="qlbt-field">
+    <div className="qlbt-card">
+      <div className="qlbt-form-group">
         <label className="qlbt-label">Câu hỏi chính *</label>
         <textarea
-          className="qlbt-textarea h-20"
+          className="qlbt-textarea"
+          style={{ height: "80px" }}
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           placeholder="Nhập câu hỏi..."
@@ -202,100 +203,172 @@ export default function MultipleFillInEditor({
         maxSize="5MB"
       />
 
-      <div className="qlbt-field">
+      <div className="qlbt-form-group">
         <label className="qlbt-label">Câu hỏi phụ (tùy chọn)</label>
         <textarea
-          className="qlbt-textarea h-16"
+          className="qlbt-textarea"
+          style={{ height: "64px" }}
           value={subQuestion}
           onChange={(e) => setSubQuestion(e.target.value)}
           placeholder="Nhập câu hỏi phụ..."
         />
       </div>
 
-      <div className="space-y-3">
+      <div className="qlbt-form-group">
         <div className="qlbt-section-title">Các ô trống</div>
-        {blanks.map((b, i) => (
-          <div key={b.id} className="border rounded p-3 space-y-2">
-            <div className="flex items-center justify-between">
-              <div className="text-sm">Ô trống {i + 1}</div>
-              {blanks.length > 2 && (
-                <button
-                  type="button"
-                  className="px-2 py-1 border rounded text-sm"
-                  onClick={() => removeBlank(i)}
+        <div className="qlbt-choices-container">
+          {blanks.map((b, i) => (
+            <div
+              key={b.id}
+              className="qlbt-choice-item"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                padding: "12px",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginBottom: "10px",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "0.875rem",
+                    fontWeight: "600",
+                    color: "#374151",
+                  }}
                 >
-                  Xóa
-                </button>
-              )}
+                  Ô trống {i + 1}
+                </div>
+                {blanks.length > 2 && (
+                  <button
+                    type="button"
+                    className="qlbt-btn-remove"
+                    onClick={() => removeBlank(i)}
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
+
+              {/* Main 3 inputs in vertical layout */}
+              <div style={{ width: "100%", marginBottom: "8px" }}>
+                <label
+                  style={{
+                    fontSize: "0.75rem",
+                    fontWeight: "500",
+                    color: "#6b7280",
+                    display: "block",
+                    marginBottom: "3px",
+                  }}
+                >
+                  Text trước ô trống (tùy chọn)
+                </label>
+                <input
+                  className="qlbt-input"
+                  placeholder="Ví dụ: Kết quả của phép tính là"
+                  value={b.beforeText}
+                  onChange={(e) => setBlank(i, { beforeText: e.target.value })}
+                  style={{ width: "100%" }}
+                />
+              </div>
+
+              <div style={{ width: "100%", marginBottom: "8px" }}>
+                <label
+                  style={{
+                    fontSize: "0.75rem",
+                    fontWeight: "500",
+                    color: "#6b7280",
+                    display: "block",
+                    marginBottom: "3px",
+                  }}
+                >
+                  Đáp án <span style={{ color: "#ef4444" }}>*</span>
+                </label>
+                <input
+                  className="qlbt-input"
+                  placeholder="Nhập đáp án đúng"
+                  value={b.answer}
+                  onChange={(e) => setBlank(i, { answer: e.target.value })}
+                  style={{ fontWeight: "500", width: "100%" }}
+                />
+              </div>
+
+              <div style={{ width: "100%", marginBottom: "10px" }}>
+                <label
+                  style={{
+                    fontSize: "0.75rem",
+                    fontWeight: "500",
+                    color: "#6b7280",
+                    display: "block",
+                    marginBottom: "3px",
+                  }}
+                >
+                  Text sau ô trống (tùy chọn)
+                </label>
+                <input
+                  className="qlbt-input"
+                  placeholder="Ví dụ: đơn vị đo"
+                  value={b.afterText}
+                  onChange={(e) => setBlank(i, { afterText: e.target.value })}
+                  style={{ width: "100%" }}
+                />
+              </div>
+
+              {/* Preview - compact version below all inputs */}
+              <div
+                style={{
+                  width: "100%",
+                  fontSize: "0.75rem",
+                  color: "#6b7280",
+                  paddingTop: "8px",
+                  borderTop: "1px solid #e5e7eb",
+                }}
+              >
+                <span style={{ fontWeight: "500", marginRight: "6px" }}>
+                  Xem trước:
+                </span>
+                {b.beforeText && <span>{b.beforeText} </span>}
+                <span
+                  style={{
+                    backgroundColor: "#dbeafe",
+                    padding: "2px 8px",
+                    borderRadius: "3px",
+                    border: "1px solid #3b82f6",
+                    fontWeight: "600",
+                    color: "#1e40af",
+                    fontSize: "0.75rem",
+                  }}
+                >
+                  {b.answer || "____"}
+                </span>
+                {b.afterText && <span> {b.afterText}</span>}
+              </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-              <input
-                className="qlbt-input"
-                placeholder="Text trước"
-                value={b.beforeText}
-                onChange={(e) => setBlank(i, { beforeText: e.target.value })}
-              />
-              <input
-                className="qlbt-input"
-                placeholder="Text sau"
-                value={b.afterText}
-                onChange={(e) => setBlank(i, { afterText: e.target.value })}
-              />
-              <input
-                className="qlbt-input"
-                placeholder="Đáp án *"
-                value={b.answer}
-                onChange={(e) => setBlank(i, { answer: e.target.value })}
-              />
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
-              <input
-                className="qlbt-input"
-                placeholder="Kiểu input (text/number)"
-                value={b.inputType}
-                onChange={(e) => setBlank(i, { inputType: e.target.value })}
-              />
-              <input
-                className="qlbt-input"
-                placeholder="Rộng (vd: 80px)"
-                value={b.width}
-                onChange={(e) => setBlank(i, { width: e.target.value })}
-              />
-              <div className="hidden md:block" />
-            </div>
-            <div className="text-xs text-gray-600">
-              Xem trước: {b.beforeText}{" "}
-              <span className="bg-gray-100 px-1 rounded">
-                {b.answer || "..."}
-              </span>{" "}
-              {b.afterText}
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
         {blanks.length < 10 && (
-          <button
-            type="button"
-            className="px-2 py-1 border rounded"
-            onClick={addBlank}
-          >
+          <button type="button" className="qlbt-btn-add" onClick={addBlank}>
             + Thêm ô trống
           </button>
         )}
       </div>
 
-      <div>
-        <label className="block text-sm font-medium mb-1">
-          Giải thích (tùy chọn)
-        </label>
+      <div className="qlbt-form-group">
+        <label className="qlbt-label">Giải thích (tùy chọn)</label>
         <input
-          className="border rounded px-2 py-1 w-full"
+          className="qlbt-input"
           value={hint}
           onChange={(e) => setHint(e.target.value)}
           placeholder="Nhập giải thích..."
         />
       </div>
 
-      {error && <div className="text-red-600 text-sm">{error}</div>}
+      {error && <div className="qlbt-error-text">{error}</div>}
     </div>
   );
 }

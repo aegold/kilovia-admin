@@ -14,19 +14,16 @@ const SharedNavbar = () => {
   const navItems = [
     {
       path: "/quan-ly-bai-tap",
-      icon: "✏️",
       label: "Tạo Câu Hỏi",
       description: "Tạo và chỉnh sửa câu hỏi",
     },
     {
       path: "/quan-ly-cau-hoi",
-      icon: "📋",
       label: "Quản Lý Câu Hỏi",
       description: "Xem, tìm kiếm và quản lý",
     },
     {
       path: "/quan-ly-chu-de",
-      icon: "📚",
       label: "Quản Lý Chủ Đề",
       description: "Tổ chức Topics & SubTopics",
     },
@@ -41,7 +38,6 @@ const SharedNavbar = () => {
           onClick={() => navigate("/")}
           title="Về trang chủ"
         >
-          <span className="home-icon">🎓</span>
           <span className="home-text">Kilovia Admin</span>
         </button>
 
@@ -56,7 +52,6 @@ const SharedNavbar = () => {
               onClick={() => navigate(item.path)}
               title={item.description}
             >
-              <span className="nav-icon">{item.icon}</span>
               <span className="nav-label">{item.label}</span>
             </button>
           ))}
@@ -65,7 +60,6 @@ const SharedNavbar = () => {
         {/* Right Section - Optional */}
         <div className="navbar-right">
           <div className="navbar-user">
-            <span className="user-icon">👤</span>
             <span className="user-name">Admin</span>
           </div>
         </div>

@@ -142,11 +142,12 @@ export default function ImageChoiceEditor({
   }, [prompt, questionImage, choiceImages, correctChoice, hint]);
 
   return (
-    <div className="qlbt-card space-y-3">
-      <div className="qlbt-field">
+    <div className="qlbt-card">
+      <div className="qlbt-form-group">
         <label className="qlbt-label">Đề bài</label>
         <textarea
-          className="qlbt-textarea h-20"
+          className="qlbt-textarea"
+          style={{ height: "80px" }}
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           placeholder="Nhập đề bài..."
@@ -162,69 +163,76 @@ export default function ImageChoiceEditor({
         maxSize="5MB"
       />
 
-      <div className="space-y-2">
+      <div className="qlbt-form-group">
         <div className="qlbt-section-title">Hình ảnh đáp án (2-6)</div>
-        {choiceImages.map((img, idx) => (
-          <div key={idx} className="border rounded p-2 space-y-2">
-            <div className="flex items-center justify-between">
-              <div className="text-sm">
-                Lựa chọn {String.fromCharCode(65 + idx)}
+        <div className="qlbt-choices-container">
+          {choiceImages.map((img, idx) => (
+            <div key={idx} className="qlbt-choice-item">
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginBottom: "8px",
+                }}
+              >
+                <div style={{ fontSize: "0.875rem", fontWeight: "500" }}>
+                  Lựa chọn {String.fromCharCode(65 + idx)}
+                </div>
+                {choiceImages.length > 2 && (
+                  <button
+                    type="button"
+                    className="qlbt-btn-remove"
+                    onClick={() => removeChoice(idx)}
+                  >
+                    Xóa
+                  </button>
+                )}
               </div>
-              {choiceImages.length > 2 && (
-                <button
-                  type="button"
-                  className="px-2 py-1 border rounded text-sm"
-                  onClick={() => removeChoice(idx)}
+              <QLBT_ImageUpload
+                fieldId={`choice-${idx}`}
+                label=""
+                value={img}
+                onChange={(id, image) => setChoiceImage(idx, image)}
+                accept="image/*"
+                maxSize="3MB"
+              />
+              {img && img.url && (
+                <label
+                  className="qlbt-checkbox-label"
+                  style={{ fontSize: "0.875rem", marginTop: "8px" }}
                 >
-                  Xóa
-                </button>
+                  <input
+                    type="radio"
+                    name="correct"
+                    checked={correctChoice === idx}
+                    onChange={() => setCorrectChoice(idx)}
+                  />
+                  Đáp án đúng
+                </label>
               )}
             </div>
-            <QLBT_ImageUpload
-              fieldId={`choice-${idx}`}
-              label=""
-              value={img}
-              onChange={(id, image) => setChoiceImage(idx, image)}
-              accept="image/*"
-              maxSize="3MB"
-            />
-            {img && img.url && (
-              <label className="text-sm flex items-center gap-2">
-                <input
-                  type="radio"
-                  name="correct"
-                  checked={correctChoice === idx}
-                  onChange={() => setCorrectChoice(idx)}
-                />
-                Đáp án đúng
-              </label>
-            )}
-          </div>
-        ))}
+          ))}
+        </div>
         {choiceImages.length < 6 && (
-          <button
-            type="button"
-            className="px-2 py-1 border rounded"
-            onClick={addChoice}
-          >
+          <button type="button" className="qlbt-btn-add" onClick={addChoice}>
             + Thêm hình
           </button>
         )}
       </div>
 
-      <div>
-        <label className="block text-sm font-medium mb-1">
-          Giải thích (tùy chọn)
-        </label>
+      <div className="qlbt-form-group">
+        <label className="qlbt-label">Giải thích (tùy chọn)</label>
         <textarea
-          className="border rounded px-2 py-1 w-full h-16"
+          className="qlbt-textarea"
+          style={{ height: "64px" }}
           value={hint}
           onChange={(e) => setHint(e.target.value)}
           placeholder="Giải thích chi tiết..."
         />
       </div>
 
-      {error && <div className="text-red-600 text-sm">{error}</div>}
+      {error && <div className="qlbt-error-text">{error}</div>}
     </div>
   );
 }

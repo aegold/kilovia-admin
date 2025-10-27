@@ -5,66 +5,98 @@
 
 import React from "react";
 
-export default function McqSinglePreview({ prompt, detail, showAnswer }) {
+export default function McqSinglePreview({
+  prompt,
+  detail,
+  showAnswer,
+  media,
+}) {
   const options = detail?.options || [];
   const correctOption = options.find((opt) => opt.correct);
 
   return (
-    <div className="space-y-4">
+    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
       {/* Prompt */}
       {prompt && (
-        <div className="text-gray-800 text-base leading-relaxed whitespace-pre-wrap">
+        <div className="qlbt-question-text" style={{ whiteSpace: "pre-wrap" }}>
           {prompt}
         </div>
       )}
 
+      {/* Image if exists */}
+      {media && media.length > 0 && media[0]?.url && (
+        <div
+          className="qlbt-question-image"
+          style={{
+            textAlign: "center",
+            margin: "1rem 0",
+            padding: "0.75rem",
+            background: "#f8f9fa",
+            borderRadius: "8px",
+            border: "1px solid #e9ecef",
+          }}
+        >
+          <img
+            src={media[0].url}
+            alt={media[0].alt || "Question image"}
+            style={{
+              maxWidth: "100%",
+              maxHeight: "300px",
+              borderRadius: "8px",
+              display: "block",
+              margin: "0 auto",
+            }}
+          />
+        </div>
+      )}
+
       {/* Options */}
-      <div className="space-y-2">
+      <div className="qlbt-choices-preview">
         {options.map((opt) => (
-          <label
+          <div
             key={opt.id}
-            className={`flex items-start gap-3 p-3 border rounded-lg cursor-pointer transition-colors ${
-              showAnswer && opt.correct
-                ? "bg-green-50 border-green-300"
-                : "border-gray-200 hover:bg-gray-50"
+            className={`qlbt-choice-item ${
+              showAnswer && opt.correct ? "correct" : ""
             }`}
           >
-            <input
-              type="radio"
-              name="preview_mcq"
-              className="mt-1"
-              checked={showAnswer && opt.correct}
-              disabled={!showAnswer}
-              readOnly
-            />
-            <div className="flex-1">
-              <div className="flex items-center gap-2">
-                <span className="font-semibold text-gray-700">{opt.id}.</span>
-                <span className="text-gray-800">{opt.text}</span>
-              </div>
-              {showAnswer && opt.correct && (
-                <div className="mt-1 text-sm text-green-600 font-medium">
-                  ✓ Đáp án đúng
-                </div>
-              )}
-            </div>
-          </label>
+            <div className="qlbt-choice-letter">{opt.id}</div>
+            <div className="qlbt-choice-text">{opt.text}</div>
+            {showAnswer && opt.correct && (
+              <span className="qlbt-correct-badge">✓</span>
+            )}
+          </div>
         ))}
       </div>
 
       {/* Show answer - always display */}
       {correctOption && (
-        <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-          <div className="text-sm text-green-800">
-            <span className="font-semibold">Đáp án:</span> {correctOption.id} -{" "}
-            {correctOption.text}
+        <div
+          style={{
+            marginTop: "0.5rem",
+            padding: "0.75rem",
+            background: "#f0fdf4",
+            border: "1px solid #22c55e",
+            borderRadius: "8px",
+            fontSize: "0.9rem",
+          }}
+        >
+          <div style={{ color: "#166534" }}>
+            <span style={{ fontWeight: "600" }}>Đáp án đúng:</span>{" "}
+            {correctOption.id} - {correctOption.text}
           </div>
         </div>
       )}
 
       {/* Shuffle notice */}
       {detail?.shuffle && (
-        <div className="text-xs text-gray-500 italic">
+        <div
+          style={{
+            fontSize: "0.75rem",
+            color: "#6b7280",
+            fontStyle: "italic",
+            marginTop: "0.5rem",
+          }}
+        >
           ℹ️ Các phương án sẽ được xáo trộn khi hiển thị cho học sinh
         </div>
       )}

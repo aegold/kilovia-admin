@@ -5,7 +5,12 @@
 
 import React from "react";
 
-export default function MatchingPairsPreview({ prompt, detail, showAnswer }) {
+export default function MatchingPairsPreview({
+  prompt,
+  detail,
+  showAnswer,
+  media,
+}) {
   const columns = detail?.columns || [];
   const pairs = detail?.pairs || [];
   const allowPartialCredit = detail?.allowPartialCredit || false;
@@ -21,36 +26,82 @@ export default function MatchingPairsPreview({ prompt, detail, showAnswer }) {
   });
 
   return (
-    <div className="space-y-4">
+    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
       {/* Prompt */}
-      {prompt && (
-        <div className="text-gray-800 text-base leading-relaxed mb-4">
-          {prompt}
+      {prompt && <div className="qlbt-question-text">{prompt}</div>}
+
+      {/* Question Image */}
+      {media && media.length > 0 && media[0].url && (
+        <div className="qlbt-question-image">
+          <img src={media[0].url} alt={media[0].alt || "Hình minh họa"} />
         </div>
       )}
 
       {/* Matching Columns */}
-      <div className="grid grid-cols-2 gap-6">
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "1.5rem",
+        }}
+      >
         {/* Left Column */}
-        <div className="space-y-3">
-          <div className="text-center font-semibold text-gray-700 pb-2 border-b-2 border-blue-400">
+        <div
+          style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}
+        >
+          <div
+            style={{
+              textAlign: "center",
+              fontWeight: "600",
+              color: "#374151",
+              paddingBottom: "0.5rem",
+              borderBottom: "2px solid #60a5fa",
+            }}
+          >
             {leftColumn.label}
           </div>
-          <div className="space-y-2">
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
+          >
             {leftColumn.items.map((item, index) => (
               <div
                 key={item.id}
-                className={`p-3 border-2 rounded-lg ${
-                  showAnswer && pairMap[item.id]
-                    ? "border-green-400 bg-green-50"
-                    : "border-gray-300 bg-white"
-                }`}
+                style={{
+                  padding: "0.75rem",
+                  border:
+                    showAnswer && pairMap[item.id]
+                      ? "2px solid #4ade80"
+                      : "2px solid #d1d5db",
+                  borderRadius: "8px",
+                  backgroundColor:
+                    showAnswer && pairMap[item.id] ? "#f0fdf4" : "white",
+                }}
               >
-                <div className="flex items-center gap-2">
-                  <span className="shrink-0 w-6 h-6 flex items-center justify-center bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <span
+                    style={{
+                      flexShrink: 0,
+                      width: "24px",
+                      height: "24px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#dbeafe",
+                      color: "#1d4ed8",
+                      borderRadius: "50%",
+                      fontSize: "0.875rem",
+                      fontWeight: "600",
+                    }}
+                  >
                     {index + 1}
                   </span>
-                  <span className="text-gray-800">{item.text}</span>
+                  <span style={{ color: "#1f2937" }}>{item.text}</span>
                 </div>
               </div>
             ))}
@@ -58,25 +109,64 @@ export default function MatchingPairsPreview({ prompt, detail, showAnswer }) {
         </div>
 
         {/* Right Column */}
-        <div className="space-y-3">
-          <div className="text-center font-semibold text-gray-700 pb-2 border-b-2 border-blue-400">
+        <div
+          style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}
+        >
+          <div
+            style={{
+              textAlign: "center",
+              fontWeight: "600",
+              color: "#374151",
+              paddingBottom: "0.5rem",
+              borderBottom: "2px solid #60a5fa",
+            }}
+          >
             {rightColumn.label}
           </div>
-          <div className="space-y-2">
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
+          >
             {rightColumn.items.map((item, index) => (
               <div
                 key={item.id}
-                className={`p-3 border-2 rounded-lg ${
-                  showAnswer && Object.values(pairMap).includes(item.id)
-                    ? "border-green-400 bg-green-50"
-                    : "border-gray-300 bg-white"
-                }`}
+                style={{
+                  padding: "0.75rem",
+                  border:
+                    showAnswer && Object.values(pairMap).includes(item.id)
+                      ? "2px solid #4ade80"
+                      : "2px solid #d1d5db",
+                  borderRadius: "8px",
+                  backgroundColor:
+                    showAnswer && Object.values(pairMap).includes(item.id)
+                      ? "#f0fdf4"
+                      : "white",
+                }}
               >
-                <div className="flex items-center gap-2">
-                  <span className="shrink-0 w-6 h-6 flex items-center justify-center bg-purple-100 text-purple-700 rounded-full text-sm font-semibold">
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                  }}
+                >
+                  <span
+                    style={{
+                      flexShrink: 0,
+                      width: "24px",
+                      height: "24px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#f3e8ff",
+                      color: "#7c3aed",
+                      borderRadius: "50%",
+                      fontSize: "0.875rem",
+                      fontWeight: "600",
+                    }}
+                  >
                     {String.fromCharCode(65 + index)}
                   </span>
-                  <span className="text-gray-800">{item.text}</span>
+                  <span style={{ color: "#1f2937" }}>{item.text}</span>
                 </div>
               </div>
             ))}
@@ -84,13 +174,16 @@ export default function MatchingPairsPreview({ prompt, detail, showAnswer }) {
         </div>
       </div>
 
-      {/* Show correct pairs - always display */}
+      {/* Show correct pairs - always display with green boxes like MCQ */}
       {pairs.length > 0 && (
-        <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
-          <div className="text-sm text-green-800 font-semibold mb-3">
+        <div style={{ marginTop: "1rem" }}>
+          <div
+            className="qlbt-section-title"
+            style={{ marginBottom: "0.75rem" }}
+          >
             Đáp án - Các cặp đúng:
           </div>
-          <div className="space-y-2">
+          <div className="qlbt-choices-container">
             {pairs.map((pair, index) => {
               const leftItem = leftColumn.items.find(
                 (item) => item.id === pair.left
@@ -99,13 +192,22 @@ export default function MatchingPairsPreview({ prompt, detail, showAnswer }) {
                 (item) => item.id === pair.right
               );
               return (
-                <div
-                  key={index}
-                  className="flex items-center gap-3 text-sm bg-white p-2 rounded border border-green-300"
-                >
-                  <span className="text-gray-700">{leftItem?.text}</span>
-                  <span className="text-green-600 font-bold">↔</span>
-                  <span className="text-gray-700">{rightItem?.text}</span>
+                <div key={index} className="qlbt-choice-item correct">
+                  <div className="qlbt-choice-letter">{index + 1}</div>
+                  <div className="qlbt-choice-text">
+                    <span>{leftItem?.text}</span>
+                    <span
+                      style={{
+                        margin: "0 0.5rem",
+                        color: "#22c55e",
+                        fontWeight: "700",
+                      }}
+                    >
+                      ↔
+                    </span>
+                    <span>{rightItem?.text}</span>
+                  </div>
+                  <div className="qlbt-correct-badge">✓</div>
                 </div>
               );
             })}
@@ -114,7 +216,14 @@ export default function MatchingPairsPreview({ prompt, detail, showAnswer }) {
       )}
 
       {/* Settings info */}
-      <div className="text-xs text-gray-500 italic text-center">
+      <div
+        style={{
+          fontSize: "0.75rem",
+          color: "#6b7280",
+          fontStyle: "italic",
+          textAlign: "center",
+        }}
+      >
         {allowPartialCredit
           ? "✓ Cho phép tính điểm từng phần"
           : "Chỉ tính điểm khi tất cả các cặp đúng"}

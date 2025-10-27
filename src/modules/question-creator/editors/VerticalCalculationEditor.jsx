@@ -160,70 +160,89 @@ export default function VerticalCalculationEditor({
   ]);
 
   return (
-    <div className="qlbt-card space-y-3">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 items-end">
-        <select
-          className="border rounded px-2 py-1"
-          value={operationType}
-          onChange={(e) => setOperationType(e.target.value)}
+    <div className="qlbt-card">
+      <div className="qlbt-form-group">
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: "8px",
+            alignItems: "end",
+          }}
         >
-          <option value="addition">Cộng (+)</option>
-          <option value="subtraction">Trừ (-)</option>
-          <option value="mixed">Cộng trừ đan xen</option>
-        </select>
-        <select
-          className="border rounded px-2 py-1"
-          value={numberOfTerms}
-          onChange={(e) => setNumberOfTerms(parseInt(e.target.value))}
-        >
-          <option value={2}>2 số hạng</option>
-          <option value={3}>3 số hạng</option>
-        </select>
-        {operationType === "mixed" && (
           <select
-            className="border rounded px-2 py-1"
-            value={operation2}
-            onChange={(e) => setOperation2(e.target.value)}
+            className="qlbt-select"
+            value={operationType}
+            onChange={(e) => setOperationType(e.target.value)}
           >
-            <option value="+">Dấu cho số hạng 2: +</option>
-            <option value="-">Dấu cho số hạng 2: -</option>
+            <option value="addition">Cộng (+)</option>
+            <option value="subtraction">Trừ (-)</option>
+            <option value="mixed">Cộng trừ đan xen</option>
           </select>
-        )}
-        {operationType === "mixed" && numberOfTerms === 3 && (
           <select
-            className="border rounded px-2 py-1"
-            value={operation3}
-            onChange={(e) => setOperation3(e.target.value)}
+            className="qlbt-select"
+            value={numberOfTerms}
+            onChange={(e) => setNumberOfTerms(parseInt(e.target.value))}
           >
-            <option value="+">Dấu cho số hạng 3: +</option>
-            <option value="-">Dấu cho số hạng 3: -</option>
+            <option value={2}>2 số hạng</option>
+            <option value={3}>3 số hạng</option>
           </select>
-        )}
+          {operationType === "mixed" && (
+            <select
+              className="qlbt-select"
+              value={operation2}
+              onChange={(e) => setOperation2(e.target.value)}
+            >
+              <option value="+">Dấu cho số hạng 2: +</option>
+              <option value="-">Dấu cho số hạng 2: -</option>
+            </select>
+          )}
+          {operationType === "mixed" && numberOfTerms === 3 && (
+            <select
+              className="qlbt-select"
+              value={operation3}
+              onChange={(e) => setOperation3(e.target.value)}
+            >
+              <option value="+">Dấu cho số hạng 3: +</option>
+              <option value="-">Dấu cho số hạng 3: -</option>
+            </select>
+          )}
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-2 items-end">
-        <input
-          className="qlbt-input"
-          placeholder="Số hạng 1"
-          value={term1}
-          onChange={(e) => setTerm1(e.target.value)}
-        />
-        <input
-          className="qlbt-input"
-          placeholder="Số hạng 2"
-          value={term2}
-          onChange={(e) => setTerm2(e.target.value)}
-        />
-        {numberOfTerms === 3 && (
+      <div className="qlbt-form-group">
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+            gap: "8px",
+            alignItems: "end",
+          }}
+        >
           <input
             className="qlbt-input"
-            placeholder="Số hạng 3"
-            value={term3}
-            onChange={(e) => setTerm3(e.target.value)}
+            placeholder="Số hạng 1"
+            value={term1}
+            onChange={(e) => setTerm1(e.target.value)}
           />
-        )}
+          <input
+            className="qlbt-input"
+            placeholder="Số hạng 2"
+            value={term2}
+            onChange={(e) => setTerm2(e.target.value)}
+          />
+          {numberOfTerms === 3 && (
+            <input
+              className="qlbt-input"
+              placeholder="Số hạng 3"
+              value={term3}
+              onChange={(e) => setTerm3(e.target.value)}
+            />
+          )}
+        </div>
       </div>
-      <div>
+
+      <div className="qlbt-form-group">
         <label className="qlbt-label">Đáp án</label>
         <input
           className="qlbt-input"
@@ -232,7 +251,8 @@ export default function VerticalCalculationEditor({
           onChange={(e) => setAnswer(e.target.value)}
         />
       </div>
-      {error && <div className="text-red-600 text-sm">{error}</div>}
+
+      {error && <div className="qlbt-error-text">{error}</div>}
     </div>
   );
 }

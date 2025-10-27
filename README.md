@@ -17,7 +17,7 @@ kilovia-admin/
 ├── src/
 │   ├── modules/           # Feature modules
 │   │   ├── question-creator/    # QuanLyBaiTap - Exercise Management
-│   │   ├── question-list/       # QuanLyCauHoi - Question Management  
+│   │   ├── question-list/       # QuanLyCauHoi - Question Management
 │   │   └── topic-management/    # QuanLyChuDe - Topic Management
 │   ├── shared/            # Shared utilities
 │   │   ├── components/    # Reusable components (SharedNavbar)
@@ -31,12 +31,15 @@ kilovia-admin/
 ## 🏗️ Architecture Highlights
 
 ### Path Aliases
+
 - `@` → `src/`
 - `@shared` → `src/shared/`
 - `@modules` → `src/modules/`
 
 ### Modules
+
 Each module is self-contained with:
+
 - Components
 - Styles (CSS modules with prefixes: `qlbt-`, `qlch-`, `qlcd-`)
 - Layout
@@ -45,6 +48,7 @@ Each module is self-contained with:
 ## 🛠️ Development
 
 ### Prerequisites
+
 - Node.js 18+
 - npm or yarn
 
@@ -77,29 +81,33 @@ npm run preview
 Backend API: `http://localhost:8080/api`
 
 Configure in `src/shared/services/axiosConfig.js`:
+
 ```js
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api",
   withCredentials: true,
-  timeout: 10000
+  timeout: 10000,
 });
 ```
 
 ## 📦 Key Features
 
 ### 1. QuanLyBaiTap (Exercise Management)
+
 - Create questions with multiple types (MCQ, Fill-in, Image choice, etc.)
 - Real-time preview
 - Template-based question generation
 - Hierarchy selection (Grade → Subject → Topic → Subtopic)
 
 ### 2. QuanLyCauHoi (Question Management)
+
 - View all questions in table format
 - Sort by type, date, hierarchy
 - Edit, delete, preview actions
 - Compact hierarchy display
 
 ### 3. QuanLyChuDe (Topic Management)
+
 - Manage curriculum hierarchy
 - Create/edit topics and subtopics
 - Hierarchical tree view
@@ -114,6 +122,7 @@ const axiosInstance = axios.create({
 ## 🔧 Environment Variables
 
 Create `.env` file:
+
 ```env
 VITE_API_BASE_URL=http://localhost:8080/api
 ```
@@ -121,6 +130,7 @@ VITE_API_BASE_URL=http://localhost:8080/api
 ## 📝 Migration Notes
 
 This project was migrated from Create React App to Vite:
+
 - ✅ All 3 modules successfully migrated (72 files)
 - ✅ Unified navigation system implemented
 - ✅ Axios configuration centralized
@@ -143,4 +153,3 @@ Private repository - All rights reserved
 ## 👥 Team
 
 Developed by the Kilovia team
-

@@ -141,74 +141,101 @@ export default function McqSingleEditor({
   }, [prompt, options, answer, shuffle, questionImage]);
 
   return (
-    <div className="qlbt-card space-y-3">
-      <div className="qlbt-field">
-        <label className="qlbt-label">Đề bài</label>
+    <div className="qlbt-card">
+      <div className="qlbt-form-group">
+        <label className="qlbt-label">
+          Đề bài <span className="qlbt-required">*</span>
+        </label>
         <textarea
-          className="qlbt-textarea h-20"
+          className="qlbt-textarea"
+          style={{ minHeight: "80px" }}
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           placeholder="Nhập đề bài..."
         />
       </div>
 
-      <QLBT_ImageUpload
-        fieldId="questionImage"
-        label="Hình ảnh câu hỏi (tùy chọn)"
-        placeholder="Thêm hình minh họa"
-        value={questionImage}
-        onChange={(id, img) => setQuestionImage(img)}
-        accept="image/*"
-        maxSize="5MB"
-      />
-
-      <div className="space-y-2">
-        <div className="qlbt-section-title">Phương án</div>
-        {options.map((opt, i) => (
-          <div key={opt.id} className="flex items-center gap-2">
-            <span className="w-6 text-center">{opt.id}</span>
-            <input
-              className="qlbt-input"
-              value={opt.text}
-              onChange={(e) => setOption(i, { text: e.target.value })}
-              placeholder={`Phương án #${i + 1}`}
-            />
-            <label className="text-sm flex items-center gap-1">
-              <input
-                type="radio"
-                checked={answer === opt.id}
-                onChange={() => setAnswer(opt.id)}
-              />
-              Đúng
-            </label>
-            <button
-              type="button"
-              className="px-2 py-1 border rounded text-sm"
-              onClick={() => removeOption(i)}
-            >
-              Xóa
-            </button>
-          </div>
-        ))}
-        <button
-          type="button"
-          className="px-2 py-1 border rounded"
-          onClick={addOption}
-        >
-          + Thêm phương án
-        </button>
+      <div className="qlbt-form-group">
+        <QLBT_ImageUpload
+          fieldId="questionImage"
+          label="Hình ảnh câu hỏi (tùy chọn)"
+          placeholder="Thêm hình minh họa"
+          value={questionImage}
+          onChange={(id, img) => setQuestionImage(img)}
+          accept="image/*"
+          maxSize="5MB"
+        />
       </div>
 
-      <label className="flex items-center gap-2 text-sm">
-        <input
-          type="checkbox"
-          checked={shuffle}
-          onChange={(e) => setShuffle(e.target.checked)}
-        />
-        Xáo trộn phương án khi hiển thị
-      </label>
+      <div className="qlbt-form-group">
+        <div className="qlbt-section-title">
+          Phương án <span className="qlbt-required">*</span>
+        </div>
+        <div className="qlbt-choices-container">
+          {options.map((opt, i) => (
+            <div key={opt.id} className="qlbt-choice-input-group">
+              <span
+                style={{
+                  width: "32px",
+                  textAlign: "center",
+                  fontWeight: "600",
+                  color: "#374151",
+                }}
+              >
+                {opt.id}
+              </span>
+              <input
+                className="qlbt-input qlbt-choice-input"
+                value={opt.text}
+                onChange={(e) => setOption(i, { text: e.target.value })}
+                placeholder={`Nhập phương án ${opt.id}`}
+              />
+              <label
+                className="qlbt-radio-option"
+                style={{ whiteSpace: "nowrap" }}
+              >
+                <input
+                  type="radio"
+                  checked={answer === opt.id}
+                  onChange={() => setAnswer(opt.id)}
+                />
+                <span>Đúng</span>
+              </label>
+              {options.length > 2 && (
+                <button
+                  type="button"
+                  className="qlbt-btn-remove"
+                  onClick={() => removeOption(i)}
+                  title="Xóa phương án"
+                >
+                  ×
+                </button>
+              )}
+            </div>
+          ))}
+          <button
+            type="button"
+            className="qlbt-btn-add"
+            onClick={addOption}
+            disabled={options.length >= 6}
+          >
+            + Thêm phương án
+          </button>
+        </div>
+      </div>
 
-      {error && <div className="text-red-600 text-sm">{error}</div>}
+      <div className="qlbt-form-group">
+        <label className="qlbt-checkbox-label">
+          <input
+            type="checkbox"
+            checked={shuffle}
+            onChange={(e) => setShuffle(e.target.checked)}
+          />
+          <span>Xáo trộn phương án khi hiển thị</span>
+        </label>
+      </div>
+
+      {error && <div className="qlbt-error">{error}</div>}
     </div>
   );
 }

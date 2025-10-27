@@ -9,6 +9,7 @@ export default function VerticalCalculationPreview({
   prompt,
   detail,
   showAnswer,
+  media,
 }) {
   const layout = detail?.layout || {};
   const result = detail?.result || "";
@@ -35,24 +36,54 @@ export default function VerticalCalculationPreview({
   const cellWidth = `${Math.max(maxLength * 16, 60)}px`;
 
   return (
-    <div className="space-y-4">
+    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
       {/* Prompt */}
-      {prompt && (
-        <div className="text-gray-800 text-base leading-relaxed mb-4">
-          {prompt}
+      {prompt && <div className="qlbt-question-text">{prompt}</div>}
+
+      {/* Question Image */}
+      {media && media.length > 0 && media[0].url && (
+        <div className="qlbt-question-image">
+          <img src={media[0].url} alt={media[0].alt || "Hình minh họa"} />
         </div>
       )}
 
       {/* Vertical Calculation Display */}
-      <div className="flex justify-center">
-        <div className="inline-block border-2 border-gray-300 rounded-lg p-6 bg-white shadow-sm">
-          <div className="font-mono text-xl space-y-2">
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <div
+          style={{
+            display: "inline-block",
+            border: "2px solid #d1d5db",
+            borderRadius: "8px",
+            padding: "1.5rem",
+            backgroundColor: "white",
+            boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          <div
+            style={{
+              fontFamily: "monospace",
+              fontSize: "1.25rem",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.5rem",
+            }}
+          >
             {/* First row (no operator) */}
-            <div className="flex items-center justify-end gap-3">
-              <div className="w-6"></div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-end",
+                gap: "0.75rem",
+              }}
+            >
+              <div style={{ width: "24px" }}></div>
               <div
-                className="text-right font-semibold"
-                style={{ width: cellWidth }}
+                style={{
+                  width: cellWidth,
+                  textAlign: "right",
+                  fontWeight: "600",
+                }}
               >
                 {rows[0]}
               </div>
@@ -64,14 +95,29 @@ export default function VerticalCalculationPreview({
               return (
                 <div
                   key={index}
-                  className="flex items-center justify-end gap-3"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                    gap: "0.75rem",
+                  }}
                 >
-                  <div className="w-6 text-center font-bold text-blue-600">
+                  <div
+                    style={{
+                      width: "24px",
+                      textAlign: "center",
+                      fontWeight: "700",
+                      color: "#2563eb",
+                    }}
+                  >
                     {getOperatorSymbol(op)}
                   </div>
                   <div
-                    className="text-right font-semibold"
-                    style={{ width: cellWidth }}
+                    style={{
+                      width: cellWidth,
+                      textAlign: "right",
+                      fontWeight: "600",
+                    }}
                   >
                     {row}
                   </div>
@@ -80,18 +126,46 @@ export default function VerticalCalculationPreview({
             })}
 
             {/* Horizontal line */}
-            <div className="flex items-center justify-end gap-3">
-              <div className="w-6"></div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-end",
+                gap: "0.75rem",
+              }}
+            >
+              <div style={{ width: "24px" }}></div>
               <div style={{ width: cellWidth }}>
-                <div className="border-t-2 border-gray-800"></div>
+                <div
+                  style={{
+                    borderTop: "2px solid #1f2937",
+                    margin: "0.25rem 0",
+                  }}
+                ></div>
               </div>
             </div>
 
             {/* Result row */}
-            <div className="flex items-center justify-end gap-3">
-              <div className="w-6"></div>
-              <div className="text-right" style={{ width: cellWidth }}>
-                <span className="inline-flex items-center justify-center text-2xl font-bold text-blue-400">
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-end",
+                gap: "0.75rem",
+              }}
+            >
+              <div style={{ width: "24px" }}></div>
+              <div style={{ width: cellWidth, textAlign: "right" }}>
+                <span
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "1.5rem",
+                    fontWeight: "700",
+                    color: "#60a5fa",
+                  }}
+                >
                   ?
                 </span>
               </div>
@@ -100,18 +174,34 @@ export default function VerticalCalculationPreview({
         </div>
       </div>
 
-      {/* Show answer - always display */}
+      {/* Show answer - always display with green box like MCQ */}
       {result && (
-        <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-          <div className="text-sm text-green-800">
-            <span className="font-semibold">Đáp án:</span>{" "}
-            <span className="font-mono text-lg font-bold">{result}</span>
+        <div className="qlbt-choice-item correct" style={{ marginTop: "1rem" }}>
+          <div className="qlbt-choice-letter">✓</div>
+          <div className="qlbt-choice-text">
+            <span style={{ fontWeight: "600" }}>Đáp án:</span>{" "}
+            <span
+              style={{
+                fontFamily: "monospace",
+                fontSize: "1.25rem",
+                fontWeight: "700",
+              }}
+            >
+              {result}
+            </span>
           </div>
         </div>
       )}
 
       {/* Calculation type info */}
-      <div className="text-xs text-gray-500 text-center italic">
+      <div
+        style={{
+          fontSize: "0.75rem",
+          color: "#6b7280",
+          textAlign: "center",
+          fontStyle: "italic",
+        }}
+      >
         {mode === "addition" && "Phép cộng theo cột"}
         {mode === "subtraction" && "Phép trừ theo cột"}
         {mode === "mixed" && "Phép tính cộng trừ đan xen"}

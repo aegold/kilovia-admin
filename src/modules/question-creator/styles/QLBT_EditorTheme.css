@@ -4,17 +4,28 @@
   border-radius: 12px;
   padding: 16px;
 }
+
 .qlbt-section-title {
   font-weight: 600;
   color: #111827;
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
 }
+
 .qlbt-field label,
 .qlbt-label {
   font-size: 14px;
   color: #374151;
   margin-bottom: 6px;
   display: block;
+  font-weight: 500;
 }
+
+.qlbt-required {
+  color: #dc2626;
+  margin-left: 2px;
+}
+
 .qlbt-input,
 .qlbt-textarea,
 .qlbt-select {
@@ -23,30 +34,304 @@
   border-radius: 8px;
   padding: 8px 10px;
   outline: none;
-  transition: border-color .15s ease, box-shadow .15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  font-size: 14px;
+  color: #1e293b;
+  background: #ffffff;
 }
+
 .qlbt-input:focus,
 .qlbt-textarea:focus,
 .qlbt-select:focus {
   border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
+
+.qlbt-textarea {
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
 .qlbt-btn {
   border: 2px solid #e5e7eb;
   border-radius: 10px;
   padding: 6px 12px;
   background: #ffffff;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
+
+.qlbt-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
 .qlbt-btn-primary {
   border-color: #2563eb;
   background: #2563eb;
   color: #ffffff;
 }
+
+.qlbt-btn-primary:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
 .qlbt-btn-outline {
   background: #ffffff;
+  border-color: #e5e7eb;
+  color: #374151;
 }
-.qlbt-hint-text { font-size: 12px; color: #6b7280; }
-.qlbt-error { color: #dc2626; font-size: 13px; }
+
+.qlbt-btn-outline:hover {
+  border-color: #d1d5db;
+  background: #f9fafb;
+}
+
+.qlbt-hint-text {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 4px;
+  display: block;
+}
+
+.qlbt-error,
+.qlbt-error-text {
+  color: #dc2626;
+  font-size: 13px;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+}
+
+/* Form Groups */
+.qlbt-form-group {
+  margin-bottom: 1.25rem;
+}
+
+/* Choices Container */
+.qlbt-choices-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.qlbt-choice-input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.qlbt-choice-input {
+  flex: 1;
+}
+
+/* Radio Options */
+.qlbt-radio-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.qlbt-radio-option input[type="radio"] {
+  cursor: pointer;
+}
+
+/* Checkbox Label */
+.qlbt-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.qlbt-checkbox-label input[type="checkbox"],
+.qlbt-choice-item input[type="checkbox"],
+input[type="checkbox"] {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  accent-color: #2563eb;
+  background-color: white;
+  border: 2px solid #d1d5db;
+}
+
+/* Buttons */
+.qlbt-btn-add {
+  background: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  align-self: flex-start;
+}
+
+.qlbt-btn-add:hover {
+  background: #16a34a;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+}
+
+.qlbt-btn-add:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.qlbt-btn-remove {
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.25rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  line-height: 1;
+  padding: 0;
+}
+
+.qlbt-btn-remove:hover {
+  background: #dc2626;
+  transform: scale(1.05);
+}
+
+/* Preview Section */
+.qlbt-preview-section {
+  background: white;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+}
+
+.qlbt-preview-content {
+  margin-top: 1rem;
+}
+
+.qlbt-preview-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  background: #f9fafb;
+  border: 2px dashed #d1d5db;
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.qlbt-placeholder-content {
+  text-align: center;
+  color: #9ca3af;
+}
+
+.qlbt-placeholder-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Question Preview */
+.qlbt-question-text {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.qlbt-question-image {
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.qlbt-question-image img {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 8px;
+  border: 2px solid #e5e7eb;
+  object-fit: contain;
+}
+
+/* Choices Preview */
+.qlbt-choices-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.qlbt-choice-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  margin: 0;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.qlbt-choice-item:hover {
+  border-color: #d1d5db;
+  background: #f9fafb;
+}
+
+.qlbt-choice-item.correct {
+  background: #f0fdf4;
+  border-color: #22c55e;
+}
+
+.qlbt-choice-letter {
+  background: #667eea;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.qlbt-choice-item.correct .qlbt-choice-letter {
+  background: #22c55e;
+}
+
+.qlbt-choice-text {
+  flex: 1;
+  font-size: 0.95rem;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.qlbt-correct-badge {
+  color: #22c55e;
+  font-weight: bold;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
 
 /* Preview Panel */
 .qlbt-preview {
@@ -55,9 +340,22 @@
   padding: 14px;
   background: #fafafa;
 }
-.qlbt-preview-title { font-weight: 600; color: #374151; margin-bottom: 8px; }
-.qlbt-preview-media img { max-height: 160px; border-radius: 8px; border: 1px solid #e5e7eb; }
-.qlbt-preview-expression .box { padding: 6px 10px; border: 2px solid #e5e7eb; border-radius: 8px; background: #ffffff; }
+.qlbt-preview-title {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+.qlbt-preview-media img {
+  max-height: 160px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+.qlbt-preview-expression .box {
+  padding: 6px 10px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  background: #ffffff;
+}
 
 /* Nút quay lại màu xanh */
 .qlbt-back-btn-inline {
@@ -67,10 +365,84 @@
   border-radius: 8px;
   padding: 6px 12px;
   transition: background-color 0.15s ease;
+  cursor: pointer;
+  font-weight: 500;
 }
 .qlbt-back-btn-inline:hover {
   background-color: #059669 !important;
   border-color: #059669 !important;
 }
 
+/* Save button */
+.qlbt-save-btn-inline {
+  background: #2563eb;
+  color: white;
+  border: 2px solid #2563eb;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
 
+.qlbt-save-btn-inline:hover:not(:disabled) {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.qlbt-save-btn-inline:disabled {
+  background: #d1d5db;
+  border-color: #d1d5db;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Image Upload Styles */
+.qlbt-form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.qlbt-field-help {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+  display: block;
+}
+
+.qlbt-btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.qlbt-btn-danger {
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.qlbt-btn-danger:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
+.qlbt-btn-warning {
+  background: #f59e0b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.qlbt-btn-warning:hover {
+  background: #d97706;
+  transform: translateY(-1px);
+}

@@ -105,67 +105,127 @@ export default function ExpressionEditor({
   }, [operation, operand1, operand2, result, mode]);
 
   return (
-    <div className="qlbt-card space-y-3">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-end">
-        <select
-          className="qlbt-select"
-          value={operation}
-          onChange={(e) => setOperation(e.target.value)}
+    <div className="qlbt-card">
+      <div className="qlbt-form-group">
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: "8px",
+            alignItems: "end",
+          }}
         >
-          <option value="addition">Phép cộng (+)</option>
-          <option value="subtraction">Phép trừ (-)</option>
-          <option value="multiplication">Phép nhân (×)</option>
-          <option value="division">Phép chia (÷)</option>
-        </select>
-        <select
-          className="qlbt-select w-full"
-          value={mode}
-          onChange={(e) => setMode(e.target.value)}
+          <select
+            className="qlbt-select"
+            value={operation}
+            onChange={(e) => setOperation(e.target.value)}
+          >
+            <option value="addition">Phép cộng (+)</option>
+            <option value="subtraction">Phép trừ (-)</option>
+            <option value="multiplication">Phép nhân (×)</option>
+            <option value="division">Phép chia (÷)</option>
+          </select>
+          <select
+            className="qlbt-select"
+            value={mode}
+            onChange={(e) => setMode(e.target.value)}
+          >
+            <option value="blank_result">Tìm kết quả (a {symbol} b = ?)</option>
+            <option value="blank_operand1">
+              Tìm số hạng 1 (? {symbol} b = c)
+            </option>
+            <option value="blank_operand2">
+              Tìm số hạng 2 (a {symbol} ? = c)
+            </option>
+            <option value="blank_both_operands">
+              Tìm 2 số hạng (? {symbol} ? = c)
+            </option>
+            <option value="blank_all">Tìm cả 3 (? {symbol} ? = ?)</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="qlbt-form-group">
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr auto 1fr",
+            gap: "8px",
+            alignItems: "end",
+          }}
         >
-          <option value="blank_result">Tìm kết quả (a {symbol} b = ?)</option>
-          <option value="blank_operand1">
-            Tìm số hạng 1 (? {symbol} b = c)
-          </option>
-          <option value="blank_operand2">
-            Tìm số hạng 2 (a {symbol} ? = c)
-          </option>
-          <option value="blank_both_operands">
-            Tìm 2 số hạng (? {symbol} ? = c)
-          </option>
-          <option value="blank_all">Tìm cả 3 (? {symbol} ? = ?)</option>
-        </select>
+          <input
+            className="qlbt-input"
+            placeholder="Số hạng 1"
+            value={operand1}
+            onChange={(e) => setOperand1(e.target.value)}
+          />
+          <div
+            style={{
+              textAlign: "center",
+              fontSize: "1.25rem",
+              fontWeight: "600",
+            }}
+          >
+            {symbol}
+          </div>
+          <input
+            className="qlbt-input"
+            placeholder="Số hạng 2"
+            value={operand2}
+            onChange={(e) => setOperand2(e.target.value)}
+          />
+        </div>
       </div>
-      <div className="grid grid-cols-3 gap-2 items-end">
-        <input
-          className="qlbt-input"
-          placeholder="Số hạng 1"
-          value={operand1}
-          onChange={(e) => setOperand1(e.target.value)}
-        />
-        <div className="text-center">{symbol}</div>
-        <input
-          className="qlbt-input"
-          placeholder="Số hạng 2"
-          value={operand2}
-          onChange={(e) => setOperand2(e.target.value)}
-        />
-      </div>
-      <div className="grid grid-cols-3 gap-2 items-end">
-        <div className="text-center">=</div>
-        <input
-          className="qlbt-input col-span-2"
-          placeholder="Kết quả"
-          value={result}
-          onChange={(e) => setResult(e.target.value)}
-        />
+
+      <div className="qlbt-form-group">
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "auto 1fr",
+            gap: "8px",
+            alignItems: "end",
+          }}
+        >
+          <div
+            style={{
+              textAlign: "center",
+              fontSize: "1.25rem",
+              fontWeight: "600",
+            }}
+          >
+            =
+          </div>
+          <input
+            className="qlbt-input"
+            placeholder="Kết quả"
+            value={result}
+            onChange={(e) => setResult(e.target.value)}
+          />
+        </div>
       </div>
 
       {/* Hint for multiple blanks */}
       {(mode === "blank_both_operands" || mode === "blank_all") && (
-        <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-          <div className="text-sm text-yellow-800 flex items-center gap-2">
+        <div
+          style={{
+            padding: "12px",
+            backgroundColor: "#fef3c7",
+            border: "1px solid #fbbf24",
+            borderRadius: "8px",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              fontSize: "0.875rem",
+              color: "#92400e",
+            }}
+          >
             <span>💡</span>
-            <span className="font-medium">Gợi ý:</span>
+            <span style={{ fontWeight: "500" }}>Gợi ý:</span>
             <span>
               Nên thêm hình ảnh đi kèm để gợi ý cho học sinh tìm số hạng
             </span>
@@ -173,7 +233,7 @@ export default function ExpressionEditor({
         </div>
       )}
 
-      {error && <div className="text-red-600 text-sm">{error}</div>}
+      {error && <div className="qlbt-error-text">{error}</div>}
     </div>
   );
 }

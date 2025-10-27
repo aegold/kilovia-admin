@@ -5,6 +5,7 @@
  */
 
 import React, { useState, useRef } from "react";
+import "../styles/QLBT_QuanLyBaiTap.css";
 
 const QLBT_ImageUpload = ({
   fieldId,

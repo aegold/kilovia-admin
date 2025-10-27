@@ -101,11 +101,12 @@ export default function FibSingleEditor({
   }, [prompt, answer, caseSensitive, normalizeSpace, questionImage]);
 
   return (
-    <div className="qlbt-card space-y-3">
-      <div className="qlbt-field">
+    <div className="qlbt-card">
+      <div className="qlbt-form-group">
         <label className="qlbt-label">Đề bài</label>
         <textarea
-          className="qlbt-textarea h-20"
+          className="qlbt-textarea"
+          style={{ height: "80px" }}
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           placeholder="Nhập đề bài, dùng [____] để đánh dấu ô trống"
@@ -122,7 +123,7 @@ export default function FibSingleEditor({
         maxSize="5MB"
       />
 
-      <div className="qlbt-field">
+      <div className="qlbt-form-group">
         <label className="qlbt-label">Đáp án</label>
         <input
           className="qlbt-input"
@@ -132,25 +133,29 @@ export default function FibSingleEditor({
         />
       </div>
 
-      <label className="flex items-center gap-2 text-sm">
-        <input
-          type="checkbox"
-          checked={caseSensitive}
-          onChange={(e) => setCaseSensitive(e.target.checked)}
-        />
-        Phân biệt hoa/thường
-      </label>
+      <div className="qlbt-form-group">
+        <label className="qlbt-checkbox-label">
+          <input
+            type="checkbox"
+            checked={caseSensitive}
+            onChange={(e) => setCaseSensitive(e.target.checked)}
+          />
+          Phân biệt hoa/thường
+        </label>
+      </div>
 
-      <label className="flex items-center gap-2 text-sm">
-        <input
-          type="checkbox"
-          checked={normalizeSpace}
-          onChange={(e) => setNormalizeSpace(e.target.checked)}
-        />
-        Chuẩn hóa khoảng trắng
-      </label>
+      <div className="qlbt-form-group">
+        <label className="qlbt-checkbox-label">
+          <input
+            type="checkbox"
+            checked={normalizeSpace}
+            onChange={(e) => setNormalizeSpace(e.target.checked)}
+          />
+          Chuẩn hóa khoảng trắng
+        </label>
+      </div>
 
-      {error && <div className="text-red-600 text-sm">{error}</div>}
+      {error && <div className="qlbt-error-text">{error}</div>}
     </div>
   );
 }
