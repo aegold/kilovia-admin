@@ -1,0 +1,266 @@
+/**
+ * QuestionFilters.css - Styling for filters bar with hierarchy cascade
+ */
+
+.question-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+}
+
+/* Filters Row */
+.filters-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.filters-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.filters-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f5f5f5;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  transition: all 0.2s;
+}
+
+.filter-group:focus-within {
+  background: white;
+  border-color: #1976d2;
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+}
+
+.filter-icon {
+  font-size: 18px;
+  opacity: 0.7;
+}
+
+.filter-search {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 14px;
+  width: 280px;
+  color: #333;
+}
+
+.filter-search::placeholder {
+  color: #999;
+}
+
+.filter-select {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  padding-right: 20px;
+  min-width: 180px;
+}
+
+.filter-select:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.filter-select option {
+  padding: 8px;
+}
+
+/* Buttons */
+.btn-create-new {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+  white-space: nowrap;
+}
+
+.btn-create-new:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.4);
+}
+
+.btn-create-new:active {
+  transform: translateY(0);
+}
+
+.btn-reset-filters {
+  padding: 10px 16px;
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.btn-reset-filters:hover {
+  background: #d32f2f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
+}
+
+/* Hierarchy Filters */
+.hierarchy-filters {
+  padding-top: 12px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.hierarchy-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 16px;
+  white-space: nowrap;
+}
+
+.hierarchy-label .label-text {
+  font-weight: 600;
+  color: #555;
+  font-size: 14px;
+}
+
+.hierarchy-selects {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.hierarchy-item {
+  flex: 1;
+  min-width: 160px;
+}
+
+.hierarchy-item .filter-select {
+  width: 100%;
+  min-width: auto;
+}
+
+.hierarchy-arrow {
+  font-size: 18px;
+  color: #999;
+  font-weight: bold;
+  opacity: 0.6;
+}
+
+/* Active filter indicator */
+.filter-group.active {
+  background: #e3f2fd;
+  border-color: #1976d2;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .hierarchy-selects {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hierarchy-item {
+    width: 100%;
+  }
+
+  .hierarchy-arrow {
+    transform: rotate(90deg);
+    align-self: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .question-filters {
+    padding: 12px;
+  }
+
+  .filters-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filters-left {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .filters-right {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .filter-group {
+    width: 100%;
+  }
+
+  .filter-search {
+    width: 100%;
+  }
+
+  .filter-select {
+    width: 100%;
+  }
+
+  .btn-create-new,
+  .btn-reset-filters {
+    width: 100%;
+  }
+
+  .hierarchy-label {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+
+  .hierarchy-selects {
+    width: 100%;
+  }
+}
+
+/* Loading state */
+.filter-select:disabled {
+  background: #fafafa;
+  cursor: wait;
+}
+
+/* Empty state hint */
+.hierarchy-hint {
+  font-size: 12px;
+  color: #999;
+  font-style: italic;
+  margin-top: 8px;
+  text-align: center;
+}

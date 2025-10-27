@@ -1,0 +1,348 @@
+/**
+ * QuestionPreviewModal.css - Styling for question preview modal
+ */
+
+/* Overlay */
+.preview-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal Container */
+.preview-modal {
+  background: white;
+  border-radius: 12px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Header */
+.preview-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  background: linear-gradient(to bottom, #f9fafb, #ffffff);
+}
+
+.preview-modal-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.preview-modal-title h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.preview-modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  line-height: 1;
+}
+
+.preview-modal-close:hover {
+  background: #f3f4f6;
+  color: #1f2937;
+}
+
+/* Kind Badge */
+.kind-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.kind-icon {
+  font-size: 16px;
+}
+
+.kind-label {
+  white-space: nowrap;
+}
+
+/* Hierarchy Info */
+.preview-modal-hierarchy {
+  padding: 16px 24px;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.hierarchy-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.hierarchy-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.breadcrumb-item {
+  color: #1f2937;
+  font-weight: 500;
+}
+
+.breadcrumb-sep {
+  color: #9ca3af;
+  font-weight: 300;
+}
+
+/* Question ID */
+.preview-modal-id {
+  padding: 12px 24px;
+  background: #fffbeb;
+  border-bottom: 1px solid #fef3c7;
+  font-size: 13px;
+  color: #92400e;
+}
+
+.preview-modal-id strong {
+  font-weight: 600;
+  color: #78350f;
+}
+
+/* Content Area */
+.preview-modal-content {
+  padding: 24px;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 200px;
+}
+
+/* Preview Error State */
+.preview-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.error-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.preview-error p {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0 0 8px 0;
+}
+
+.preview-error small {
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+/* Explanation Section */
+.preview-modal-explanation {
+  padding: 16px 24px;
+  background: #f0fdf4;
+  border-top: 1px solid #d1fae5;
+  border-bottom: 1px solid #d1fae5;
+}
+
+.explanation-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #065f46;
+  margin-bottom: 8px;
+}
+
+.explanation-content {
+  font-size: 14px;
+  color: #064e3b;
+  line-height: 1.6;
+}
+
+/* Hints Section */
+.preview-modal-hints {
+  padding: 16px 24px;
+  background: #eff6ff;
+  border-top: 1px solid #dbeafe;
+  border-bottom: 1px solid #dbeafe;
+}
+
+.hints-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e40af;
+  margin-bottom: 8px;
+}
+
+.hints-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 14px;
+  color: #1e3a8a;
+  line-height: 1.6;
+}
+
+.hints-list li {
+  margin-bottom: 4px;
+}
+
+/* Footer */
+.preview-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.preview-modal-footer button {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-preview-edit {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn-preview-edit:hover {
+  background: #2563eb;
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+}
+
+.btn-preview-close {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.btn-preview-close:hover {
+  background: #d1d5db;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .preview-modal-overlay {
+    padding: 10px;
+  }
+
+  .preview-modal {
+    max-width: 100%;
+    max-height: 95vh;
+    border-radius: 8px;
+  }
+
+  .preview-modal-header {
+    padding: 16px;
+  }
+
+  .preview-modal-title h3 {
+    font-size: 18px;
+  }
+
+  .kind-badge {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  .preview-modal-content {
+    padding: 16px;
+  }
+
+  .hierarchy-breadcrumb {
+    font-size: 13px;
+  }
+
+  .preview-modal-footer {
+    padding: 12px 16px;
+    flex-direction: column-reverse;
+  }
+
+  .preview-modal-footer button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Custom Scrollbar */
+.preview-modal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.preview-modal::-webkit-scrollbar-track {
+  background: #f3f4f6;
+}
+
+.preview-modal::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+.preview-modal::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}

@@ -1,0 +1,134 @@
+/* HierarchySelector.css - Placeholder */
+/* Will be migrated with full styles in Batch 5 */
+
+.hierarchy-selector {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.hierarchy-selector-content {
+  background-color: white;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.hierarchy-selector-title {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.hierarchy-selector-description {
+  color: #6b7280;
+  margin-bottom: 2rem;
+}
+
+.hierarchy-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.hierarchy-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.hierarchy-label {
+  font-weight: 600;
+  color: #374151;
+}
+
+.required {
+  color: #ef4444;
+}
+
+.hierarchy-select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+
+.hierarchy-select:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+}
+
+.loading-text {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.hierarchy-summary {
+  background-color: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.hierarchy-summary h4 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.hierarchy-path {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.path-item {
+  font-weight: 500;
+  color: #1e40af;
+}
+
+.path-separator {
+  color: #6b7280;
+}
+
+.hierarchy-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.qlbt-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.qlbt-btn-primary {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.qlbt-btn-primary:hover:not(:disabled) {
+  background-color: #2563eb;
+}
+
+.qlbt-btn-primary:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.qlbt-btn-secondary {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.qlbt-btn-secondary:hover {
+  background-color: #d1d5db;
+}

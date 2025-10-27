@@ -1,0 +1,76 @@
+.qlbt-card {
+  border: 2px solid #e5e7eb;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+}
+.qlbt-section-title {
+  font-weight: 600;
+  color: #111827;
+}
+.qlbt-field label,
+.qlbt-label {
+  font-size: 14px;
+  color: #374151;
+  margin-bottom: 6px;
+  display: block;
+}
+.qlbt-input,
+.qlbt-textarea,
+.qlbt-select {
+  width: 100%;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 8px 10px;
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.qlbt-input:focus,
+.qlbt-textarea:focus,
+.qlbt-select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+}
+.qlbt-btn {
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 6px 12px;
+  background: #ffffff;
+}
+.qlbt-btn-primary {
+  border-color: #2563eb;
+  background: #2563eb;
+  color: #ffffff;
+}
+.qlbt-btn-outline {
+  background: #ffffff;
+}
+.qlbt-hint-text { font-size: 12px; color: #6b7280; }
+.qlbt-error { color: #dc2626; font-size: 13px; }
+
+/* Preview Panel */
+.qlbt-preview {
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px;
+  background: #fafafa;
+}
+.qlbt-preview-title { font-weight: 600; color: #374151; margin-bottom: 8px; }
+.qlbt-preview-media img { max-height: 160px; border-radius: 8px; border: 1px solid #e5e7eb; }
+.qlbt-preview-expression .box { padding: 6px 10px; border: 2px solid #e5e7eb; border-radius: 8px; background: #ffffff; }
+
+/* Nút quay lại màu xanh */
+.qlbt-back-btn-inline {
+  background-color: #10b981 !important;
+  color: white !important;
+  border: 2px solid #10b981 !important;
+  border-radius: 8px;
+  padding: 6px 12px;
+  transition: background-color 0.15s ease;
+}
+.qlbt-back-btn-inline:hover {
+  background-color: #059669 !important;
+  border-color: #059669 !important;
+}
+
+

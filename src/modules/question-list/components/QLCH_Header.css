@@ -1,0 +1,180 @@
+/**
+ * QLCH_Header.css - Header styling for QuanLyCauHoi
+ * Based on QLBT_Header.css but adapted for question management
+ */
+
+.qlch-header-nav {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 16px 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.qlch-header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+/* Left Section */
+.qlch-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  min-width: 0; /* Allow text truncation */
+}
+
+.qlch-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.qlch-btn-home {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.qlch-btn-home:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.qlch-header-divider {
+  width: 1px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.qlch-header-title-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.qlch-title {
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.qlch-subtitle {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 13px;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Right Section */
+.qlch-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.qlch-btn-create {
+  background: white;
+  color: #764ba2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.qlch-btn-create:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.qlch-btn-create .btn-icon {
+  font-size: 16px;
+}
+
+.qlch-btn-create .btn-label {
+  font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .qlch-header-nav {
+    padding: 12px 16px;
+  }
+
+  .qlch-header-content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .qlch-header-left {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .qlch-header-divider {
+    display: none;
+  }
+
+  .qlch-title {
+    font-size: 18px;
+  }
+
+  .qlch-subtitle {
+    font-size: 12px;
+  }
+
+  .qlch-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .qlch-btn-create {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .qlch-header-right {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .qlch-title {
+    font-size: 16px;
+  }
+
+  .qlch-subtitle {
+    font-size: 11px;
+  }
+
+  .qlch-btn {
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+
+  .qlch-btn-create .btn-label {
+    font-size: 13px;
+  }
+}

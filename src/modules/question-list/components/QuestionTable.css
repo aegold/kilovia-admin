@@ -1,0 +1,407 @@
+/**
+ * QuestionTable.css - Styling for table view
+ */
+
+.question-table-container {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Bulk Actions Bar */
+.bulk-actions-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #e3f2fd;
+  border-bottom: 1px solid #90caf9;
+}
+
+.selected-count {
+  flex: 1;
+  font-size: 14px;
+  color: #1976d2;
+}
+
+.selected-count strong {
+  font-weight: 600;
+}
+
+.btn-bulk-delete,
+.btn-bulk-cancel {
+  padding: 6px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-bulk-delete {
+  background: #f44336;
+  color: white;
+}
+
+.btn-bulk-delete:hover {
+  background: #d32f2f;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(244, 67, 54, 0.3);
+}
+
+.btn-bulk-cancel {
+  background: #fff;
+  color: #666;
+  border: 1px solid #ddd;
+}
+
+.btn-bulk-cancel:hover {
+  background: #f5f5f5;
+}
+
+/* Table Wrapper */
+.table-wrapper {
+  overflow-x: auto;
+  max-height: calc(100vh - 250px);
+  overflow-y: auto;
+}
+
+/* Table */
+.question-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.question-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #f5f5f5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.question-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #ddd;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.question-table th.sortable {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.question-table th.sortable:hover {
+  background: #e8e8e8;
+}
+
+.sort-icon {
+  display: inline-block;
+  margin-left: 4px;
+  color: #1976d2;
+  font-size: 12px;
+}
+
+.question-table tbody tr {
+  border-bottom: 1px solid #eee;
+  transition: background 0.2s;
+}
+
+.question-table tbody tr:hover {
+  background: #f9f9f9;
+}
+
+.question-table tbody tr.selected {
+  background: #e3f2fd;
+}
+
+.question-table td {
+  padding: 12px 16px;
+  vertical-align: middle;
+}
+
+/* Column widths */
+.col-checkbox {
+  width: 40px;
+  text-align: center;
+}
+
+.col-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.col-kind {
+  width: 150px;
+}
+
+.col-prompt {
+  min-width: 250px;
+  max-width: 400px;
+}
+
+.col-answer {
+  min-width: 150px;
+  max-width: 250px;
+}
+
+.col-hierarchy {
+  min-width: 200px;
+  max-width: 300px;
+}
+
+.col-date {
+  width: 150px;
+}
+
+.col-actions {
+  width: 130px;
+}
+
+/* Kind Badge */
+.kind-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.kind-icon {
+  font-size: 14px;
+}
+
+.kind-label {
+  display: inline-block;
+}
+
+/* Hierarchy Container - 2 lines layout */
+.hierarchy-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: #555;
+}
+
+.hierarchy-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.hierarchy-item {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #f5f5f5;
+  font-weight: 500;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.hierarchy-item.grade {
+  background: #e3f2fd;
+  color: #1976d2;
+  flex-shrink: 0;
+}
+
+.hierarchy-item.subject {
+  background: #e8f5e9;
+  color: #388e3c;
+  flex-shrink: 1;
+}
+
+.hierarchy-item.topic {
+  background: #fff3e0;
+  color: #f57c00;
+  flex-shrink: 1;
+}
+
+.hierarchy-item.subtopic {
+  background: #f3e5f5;
+  color: #7b1fa2;
+  flex-shrink: 1;
+}
+
+.hierarchy-sep {
+  color: #bbb;
+  font-weight: 300;
+  margin: 0 2px;
+  flex-shrink: 0;
+}
+
+.no-hierarchy {
+  color: #999;
+  font-style: italic;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.btn-action {
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.btn-preview:hover {
+  background: #e3f2fd;
+  border-color: #2196f3;
+}
+
+.btn-edit:hover {
+  background: #fff3e0;
+  border-color: #ff9800;
+}
+
+.btn-delete:hover {
+  background: #ffebee;
+  border-color: #f44336;
+}
+
+/* Loading State */
+.question-table-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  background: white;
+  border-radius: 8px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #1976d2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.question-table-loading p {
+  color: #666;
+  font-size: 14px;
+}
+
+/* Empty State */
+.question-table-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  background: white;
+  border-radius: 8px;
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.question-table-empty h3 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.question-table-empty p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .col-prompt {
+    max-width: 300px;
+  }
+
+  .col-answer {
+    max-width: 200px;
+  }
+
+  .col-hierarchy {
+    max-width: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .question-table {
+    font-size: 12px;
+  }
+
+  .question-table th,
+  .question-table td {
+    padding: 8px 12px;
+  }
+
+  .kind-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+
+  .hierarchy-breadcrumb {
+    font-size: 11px;
+  }
+
+  .btn-action {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  .col-kind {
+    width: 120px;
+  }
+
+  .col-date {
+    width: 120px;
+  }
+
+  .col-actions {
+    width: 110px;
+  }
+}
