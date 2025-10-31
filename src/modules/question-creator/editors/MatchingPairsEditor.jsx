@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { KINDS } from "@shared/constants/kinds";
 import { makeQuestionEnvelope } from "@shared/utils/envelop";
+import {
+  validateEnvelope,
+  formatValidationErrors,
+} from "@shared/validators/envelopeValidators";
 import "../styles/QLBT_EditorTheme.css";
 
 export default function MatchingPairsEditor({
@@ -31,6 +35,7 @@ export default function MatchingPairsEditor({
   ]);
   const [pairs, setPairs] = useState([]);
   const [allowPartialCredit, setAllowPartialCredit] = useState(false);
+  const [hint, setHint] = useState("");
   const [error, setError] = useState("");
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -62,6 +67,10 @@ export default function MatchingPairsEditor({
 
       if (initialEnvelope.detail?.allowPartialCredit !== undefined) {
         setAllowPartialCredit(initialEnvelope.detail.allowPartialCredit);
+      }
+
+      if (initialEnvelope.explanation) {
+        setHint(initialEnvelope.explanation);
       }
 
       setIsInitialized(true);
@@ -112,20 +121,28 @@ export default function MatchingPairsEditor({
   };
 
   const buildEnvelope = () => {
-    // Basic validation
-    if (!columns.length || !pairs.length) {
-      throw new Error("Columns and pairs are required");
-    }
     const detail = {
       columns,
       pairs,
       allowPartialCredit,
     };
-    return makeQuestionEnvelope({
+    const extras = {
+      explanation: hint || "",
+    };
+    const envelope = makeQuestionEnvelope({
       kind: KINDS.MATCHING_PAIRS,
       prompt,
       detail,
+      extras,
     });
+
+    // Centralized validation
+    const validation = validateEnvelope(envelope);
+    if (!validation.valid) {
+      throw new Error(formatValidationErrors(validation.errors));
+    }
+
+    return envelope;
   };
 
   useEffect(() => {
@@ -135,15 +152,10 @@ export default function MatchingPairsEditor({
       onEnvelopeChange && onEnvelopeChange(env);
     } catch (e) {
       onEnvelopeChange && onEnvelopeChange(null);
-      // Chỉ hiển thị message lỗi cần thiết
-      if (e.issues && e.issues.length > 0) {
-        setError(e.issues[0].message);
-      } else {
-        setError(e.message || "Dữ liệu không hợp lệ");
-      }
+      setError(e.message || "Dữ liệu không hợp lệ");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [prompt, columns, pairs, allowPartialCredit]);
+  }, [prompt, columns, pairs, allowPartialCredit, hint]);
 
   return (
     <div className="qlbt-card">
@@ -370,6 +382,17 @@ export default function MatchingPairsEditor({
         >
           + Thêm cặp
         </button>
+      </div>
+
+      <div className="qlbt-form-group">
+        <label className="qlbt-label">Giải thích (tùy chọn)</label>
+        <textarea
+          className="qlbt-textarea"
+          style={{ height: "60px" }}
+          value={hint}
+          onChange={(e) => setHint(e.target.value)}
+          placeholder="Nhập giải thích cho câu hỏi..."
+        />
       </div>
 
       {error && <div className="qlbt-error-text">{error}</div>}

@@ -1,6 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { KINDS } from "@shared/constants/kinds";
 import { makeQuestionEnvelope } from "@shared/utils/envelop";
+import {
+  validateEnvelope,
+  formatValidationErrors,
+} from "@shared/validators/envelopeValidators";
 import "../styles/QLBT_EditorTheme.css";
 
 export default function ExpressionEditor({
@@ -15,6 +19,7 @@ export default function ExpressionEditor({
   const [operand2, setOperand2] = useState("");
   const [result, setResult] = useState("");
   const [mode, setMode] = useState("blank_result");
+  const [hint, setHint] = useState("");
   const [error, setError] = useState("");
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -44,6 +49,10 @@ export default function ExpressionEditor({
 
       if (initialEnvelope.detail?.mode) {
         setMode(initialEnvelope.detail.mode);
+      }
+
+      if (initialEnvelope.explanation) {
+        setHint(initialEnvelope.explanation);
       }
 
       setIsInitialized(true);
@@ -84,7 +93,20 @@ export default function ExpressionEditor({
   const buildEnvelope = () => {
     const detail = { operation, operand1, operand2, result, mode };
     const prompt = "Điền số thích hợp vào ô trống:";
-    return makeQuestionEnvelope({ kind: KINDS.EXPRESSION, prompt, detail });
+    const envelope = makeQuestionEnvelope({
+      kind: KINDS.EXPRESSION,
+      prompt,
+      detail,
+      extras: { explanation: hint || "" },
+    });
+
+    // Centralized validation
+    const validation = validateEnvelope(envelope);
+    if (!validation.valid) {
+      throw new Error(formatValidationErrors(validation.errors));
+    }
+
+    return envelope;
   };
 
   useEffect(() => {
@@ -94,15 +116,10 @@ export default function ExpressionEditor({
       onEnvelopeChange && onEnvelopeChange(env);
     } catch (e) {
       onEnvelopeChange && onEnvelopeChange(null);
-      // Chỉ hiển thị message lỗi cần thiết
-      if (e.issues && e.issues.length > 0) {
-        setError(e.issues[0].message);
-      } else {
-        setError(e.message || "Dữ liệu không hợp lệ");
-      }
+      setError(e.message || "Dữ liệu không hợp lệ");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [operation, operand1, operand2, result, mode]);
+  }, [operation, operand1, operand2, result, mode, hint]);
 
   return (
     <div className="qlbt-card">
@@ -232,6 +249,17 @@ export default function ExpressionEditor({
           </div>
         </div>
       )}
+
+      <div className="qlbt-form-group">
+        <label className="qlbt-label">Giải thích (tùy chọn)</label>
+        <textarea
+          className="qlbt-textarea"
+          style={{ height: "80px" }}
+          value={hint}
+          onChange={(e) => setHint(e.target.value)}
+          placeholder="Giải thích chi tiết đáp án..."
+        />
+      </div>
 
       {error && <div className="qlbt-error-text">{error}</div>}
     </div>

@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { KINDS } from "@shared/constants/kinds";
 import { makeQuestionEnvelope } from "@shared/utils/envelop";
+import {
+  validateEnvelope,
+  formatValidationErrors,
+} from "@shared/validators/envelopeValidators";
 import QLBT_ImageUpload from "../components/QLBT_ImageUpload";
 import "../styles/QLBT_EditorTheme.css";
 
@@ -21,6 +25,7 @@ export default function McqSingleEditor({
   const [answer, setAnswer] = useState("A");
   const [shuffle, setShuffle] = useState(true);
   const [questionImage, setQuestionImage] = useState(null);
+  const [hint, setHint] = useState("");
   const [error, setError] = useState("");
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -69,6 +74,11 @@ export default function McqSingleEditor({
         });
       }
 
+      // Load explanation
+      if (initialEnvelope.explanation) {
+        setHint(initialEnvelope.explanation);
+      }
+
       setIsInitialized(true);
     }
   }, [initialEnvelope, isInitialized]);
@@ -97,30 +107,34 @@ export default function McqSingleEditor({
   };
 
   const buildEnvelope = () => {
-    // Basic validation
-    if (!options.length || !answer) {
-      throw new Error("Options and answer are required");
-    }
     const detail = {
       options: options.map((o) => ({ ...o, correct: o.id === answer })),
       shuffle,
     };
-    return makeQuestionEnvelope({
+    const media = questionImage?.url
+      ? [
+          {
+            type: "image",
+            url: questionImage.url,
+            alt: questionImage.alt || "",
+          },
+        ]
+      : [];
+
+    const envelope = makeQuestionEnvelope({
       kind: KINDS.MCQ_SINGLE,
       prompt,
       detail,
-      extras: {
-        media: questionImage?.url
-          ? [
-              {
-                type: "image",
-                url: questionImage.url,
-                alt: questionImage.alt || "",
-              },
-            ]
-          : [],
-      },
+      extras: { media, explanation: hint || "" },
     });
+
+    // Centralized validation
+    const validation = validateEnvelope(envelope);
+    if (!validation.valid) {
+      throw new Error(formatValidationErrors(validation.errors));
+    }
+
+    return envelope;
   };
 
   useEffect(() => {
@@ -130,15 +144,10 @@ export default function McqSingleEditor({
       onEnvelopeChange && onEnvelopeChange(env);
     } catch (e) {
       onEnvelopeChange && onEnvelopeChange(null);
-      // Chỉ hiển thị message lỗi cần thiết
-      if (e.issues && e.issues.length > 0) {
-        setError(e.issues[0].message);
-      } else {
-        setError(e.message || "Dữ liệu không hợp lệ");
-      }
+      setError(e.message || "Dữ liệu không hợp lệ");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [prompt, options, answer, shuffle, questionImage]);
+  }, [prompt, options, answer, shuffle, questionImage, hint]);
 
   return (
     <div className="qlbt-card">
@@ -233,6 +242,17 @@ export default function McqSingleEditor({
           />
           <span>Xáo trộn phương án khi hiển thị</span>
         </label>
+      </div>
+
+      <div className="qlbt-form-group">
+        <label className="qlbt-label">Giải thích (tùy chọn)</label>
+        <textarea
+          className="qlbt-textarea"
+          style={{ height: "80px" }}
+          value={hint}
+          onChange={(e) => setHint(e.target.value)}
+          placeholder="Giải thích chi tiết đáp án..."
+        />
       </div>
 
       {error && <div className="qlbt-error">{error}</div>}

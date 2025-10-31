@@ -1,6 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { KINDS } from "@shared/constants/kinds";
 import { makeQuestionEnvelope } from "@shared/utils/envelop";
+import {
+  validateEnvelope,
+  formatValidationErrors,
+} from "@shared/validators/envelopeValidators";
 import "../styles/QLBT_EditorTheme.css";
 
 export default function VerticalCalculationEditor({
@@ -18,6 +22,7 @@ export default function VerticalCalculationEditor({
   const [operation2, setOperation2] = useState("+");
   const [operation3, setOperation3] = useState("+");
   const [answer, setAnswer] = useState("");
+  const [hint, setHint] = useState("");
   const [error, setError] = useState("");
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -58,6 +63,10 @@ export default function VerticalCalculationEditor({
 
       if (initialEnvelope.detail?.answer !== undefined) {
         setAnswer(initialEnvelope.detail.answer.toString());
+      }
+
+      if (initialEnvelope.explanation) {
+        setHint(initialEnvelope.explanation);
       }
 
       setIsInitialized(true);
@@ -101,8 +110,6 @@ export default function VerticalCalculationEditor({
   }, [term1, term2, term3, calculated]);
 
   const buildEnvelope = () => {
-    if (!term1 || !term2) throw new Error("Nhập đủ 2 số");
-    if (numberOfTerms === 3 && !term3) throw new Error("Nhập số hạng thứ 3");
     const rows = [
       String(term1),
       String(term2),
@@ -126,11 +133,20 @@ export default function VerticalCalculationEditor({
     const result = String(answer || calculated || "");
     const detail = { layout, result };
     const prompt = "Thực hiện phép tính theo cột";
-    return makeQuestionEnvelope({
+    const envelope = makeQuestionEnvelope({
       kind: KINDS.VERTICAL_CALCULATION,
       prompt,
       detail,
+      extras: { explanation: hint || "" },
     });
+
+    // Centralized validation
+    const validation = validateEnvelope(envelope);
+    if (!validation.valid) {
+      throw new Error(formatValidationErrors(validation.errors));
+    }
+
+    return envelope;
   };
 
   useEffect(() => {
@@ -140,12 +156,7 @@ export default function VerticalCalculationEditor({
       onEnvelopeChange && onEnvelopeChange(env);
     } catch (e) {
       onEnvelopeChange && onEnvelopeChange(null);
-      // Chỉ hiển thị message lỗi cần thiết
-      if (e.issues && e.issues.length > 0) {
-        setError(e.issues[0].message);
-      } else {
-        setError(e.message || "Dữ liệu không hợp lệ");
-      }
+      setError(e.message || "Dữ liệu không hợp lệ");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
@@ -157,6 +168,7 @@ export default function VerticalCalculationEditor({
     operation2,
     operation3,
     answer,
+    hint,
   ]);
 
   return (
@@ -249,6 +261,17 @@ export default function VerticalCalculationEditor({
           placeholder="Kết quả"
           value={answer}
           onChange={(e) => setAnswer(e.target.value)}
+        />
+      </div>
+
+      <div className="qlbt-form-group">
+        <label className="qlbt-label">Giải thích (tùy chọn)</label>
+        <textarea
+          className="qlbt-textarea"
+          style={{ height: "80px" }}
+          value={hint}
+          onChange={(e) => setHint(e.target.value)}
+          placeholder="Giải thích chi tiết đáp án..."
         />
       </div>
 

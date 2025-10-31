@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { KINDS } from "@shared/constants/kinds";
 import { makeQuestionEnvelope } from "@shared/utils/envelop";
+import {
+  validateEnvelope,
+  formatValidationErrors,
+} from "@shared/validators/envelopeValidators";
 import QLBT_ImageUpload from "../components/QLBT_ImageUpload";
 import "../styles/QLBT_EditorTheme.css";
 
@@ -59,8 +63,8 @@ export default function MultipleFillInEditor({
         setBlanks(initialEnvelope.detail.blanks);
       }
 
-      if (initialEnvelope.hints && initialEnvelope.hints.length > 0) {
-        setHint(initialEnvelope.hints[0]);
+      if (initialEnvelope.explanation) {
+        setHint(initialEnvelope.explanation);
       }
 
       if (initialEnvelope.media && initialEnvelope.media.length > 0) {
@@ -99,10 +103,6 @@ export default function MultipleFillInEditor({
   };
 
   const buildEnvelope = () => {
-    if (!question.trim()) throw new Error("Câu hỏi chính là bắt buộc");
-    const invalid = blanks.find((b) => !String(b.answer || "").trim());
-    if (invalid) throw new Error("Tất cả ô trống phải có đáp án");
-
     const detail = {
       blocks: [
         ...(question.trim()
@@ -156,12 +156,20 @@ export default function MultipleFillInEditor({
         ]
       : [];
 
-    return makeQuestionEnvelope({
+    const envelope = makeQuestionEnvelope({
       kind: KINDS.MULTIPLE_FILL_IN,
       prompt: question,
       detail,
       extras: { media, explanation: hint || "" },
     });
+
+    // Centralized validation
+    const validation = validateEnvelope(envelope);
+    if (!validation.valid) {
+      throw new Error(formatValidationErrors(validation.errors));
+    }
+
+    return envelope;
   };
 
   useEffect(() => {
@@ -171,12 +179,7 @@ export default function MultipleFillInEditor({
       onEnvelopeChange && onEnvelopeChange(env);
     } catch (e) {
       onEnvelopeChange && onEnvelopeChange(null);
-      // Chỉ hiển thị message lỗi cần thiết
-      if (e.issues && e.issues.length > 0) {
-        setError(e.issues[0].message);
-      } else {
-        setError(e.message || "Dữ liệu không hợp lệ");
-      }
+      setError(e.message || "Dữ liệu không hợp lệ");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [question, questionImage, subQuestion, blanks, hint]);

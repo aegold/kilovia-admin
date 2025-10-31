@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { KINDS } from "@shared/constants/kinds";
 import { makeQuestionEnvelope } from "@shared/utils/envelop";
+import {
+  validateEnvelope,
+  formatValidationErrors,
+} from "@shared/validators/envelopeValidators";
 import QLBT_ImageUpload from "../components/QLBT_ImageUpload";
 import "../styles/QLBT_EditorTheme.css";
 
@@ -47,8 +51,8 @@ export default function ImageChoiceEditor({
         }
       }
 
-      if (initialEnvelope.hints && initialEnvelope.hints.length > 0) {
-        setHint(initialEnvelope.hints[0]);
+      if (initialEnvelope.explanation) {
+        setHint(initialEnvelope.explanation);
       }
 
       if (initialEnvelope.media && initialEnvelope.media.length > 0) {
@@ -84,18 +88,9 @@ export default function ImageChoiceEditor({
   };
 
   const buildEnvelope = () => {
-    // Validate minimal: need prompt + at least one image + correctChoice set
-    if (!prompt.trim()) throw new Error("Cần nhập đề bài");
     const images = choiceImages
       .map((img, idx) => ({ idx, img }))
       .filter((c) => c.img && c.img.url);
-    if (images.length < 2) throw new Error("Cần ít nhất 2 hình đáp án");
-    if (
-      correctChoice == null ||
-      !choiceImages[correctChoice] ||
-      !choiceImages[correctChoice].url
-    )
-      throw new Error("Chọn 1 đáp án đúng");
 
     const detail = {
       options: images.map((c, i) => ({
@@ -116,12 +111,20 @@ export default function ImageChoiceEditor({
         ]
       : [];
 
-    return makeQuestionEnvelope({
+    const envelope = makeQuestionEnvelope({
       kind: KINDS.IMAGE_CHOICE,
       prompt,
       detail,
       extras: { media, explanation: hint || "" },
     });
+
+    // Centralized validation
+    const validation = validateEnvelope(envelope);
+    if (!validation.valid) {
+      throw new Error(formatValidationErrors(validation.errors));
+    }
+
+    return envelope;
   };
 
   useEffect(() => {
@@ -131,12 +134,7 @@ export default function ImageChoiceEditor({
       onEnvelopeChange && onEnvelopeChange(env);
     } catch (e) {
       onEnvelopeChange && onEnvelopeChange(null);
-      // Chỉ hiển thị message lỗi cần thiết
-      if (e.issues && e.issues.length > 0) {
-        setError(e.issues[0].message);
-      } else {
-        setError(e.message || "Dữ liệu không hợp lệ");
-      }
+      setError(e.message || "Dữ liệu không hợp lệ");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [prompt, questionImage, choiceImages, correctChoice, hint]);

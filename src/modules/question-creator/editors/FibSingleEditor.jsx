@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { KINDS } from "@shared/constants/kinds";
 import { makeQuestionEnvelope } from "@shared/utils/envelop";
+import {
+  validateEnvelope,
+  formatValidationErrors,
+} from "@shared/validators/envelopeValidators";
 import QLBT_ImageUpload from "../components/QLBT_ImageUpload";
 import "../styles/QLBT_EditorTheme.css";
 
@@ -16,6 +20,7 @@ export default function FibSingleEditor({
   const [caseSensitive, setCaseSensitive] = useState(false);
   const [normalizeSpace, setNormalizeSpace] = useState(true);
   const [questionImage, setQuestionImage] = useState(null);
+  const [hint, setHint] = useState("");
   const [error, setError] = useState("");
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -51,36 +56,45 @@ export default function FibSingleEditor({
         });
       }
 
+      if (initialEnvelope.explanation) {
+        setHint(initialEnvelope.explanation);
+      }
+
       setIsInitialized(true);
     }
   }, [initialEnvelope, isInitialized]);
 
   const buildEnvelope = () => {
-    // Basic validation
-    if (!answer.trim()) {
-      throw new Error("Answer is required");
-    }
     const detailEnvelope = {
       answer,
       case_sensitive: !!caseSensitive,
       normalize_space: !!normalizeSpace,
     };
-    return makeQuestionEnvelope({
+
+    const media = questionImage?.url
+      ? [
+          {
+            type: "image",
+            url: questionImage.url,
+            alt: questionImage.alt || "",
+          },
+        ]
+      : [];
+
+    const envelope = makeQuestionEnvelope({
       kind: KINDS.FIB_SINGLE,
       prompt,
       detail: detailEnvelope,
-      extras: {
-        media: questionImage?.url
-          ? [
-              {
-                type: "image",
-                url: questionImage.url,
-                alt: questionImage.alt || "",
-              },
-            ]
-          : [],
-      },
+      extras: { media, explanation: hint || "" },
     });
+
+    // Centralized validation
+    const validation = validateEnvelope(envelope);
+    if (!validation.valid) {
+      throw new Error(formatValidationErrors(validation.errors));
+    }
+
+    return envelope;
   };
 
   useEffect(() => {
@@ -90,15 +104,10 @@ export default function FibSingleEditor({
       onEnvelopeChange && onEnvelopeChange(env);
     } catch (e) {
       onEnvelopeChange && onEnvelopeChange(null);
-      // Chỉ hiển thị message lỗi cần thiết
-      if (e.issues && e.issues.length > 0) {
-        setError(e.issues[0].message);
-      } else {
-        setError(e.message || "Dữ liệu không hợp lệ");
-      }
+      setError(e.message || "Dữ liệu không hợp lệ");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [prompt, answer, caseSensitive, normalizeSpace, questionImage]);
+  }, [prompt, answer, caseSensitive, normalizeSpace, questionImage, hint]);
 
   return (
     <div className="qlbt-card">
@@ -153,6 +162,17 @@ export default function FibSingleEditor({
           />
           Chuẩn hóa khoảng trắng
         </label>
+      </div>
+
+      <div className="qlbt-form-group">
+        <label className="qlbt-label">Giải thích (tùy chọn)</label>
+        <textarea
+          className="qlbt-textarea"
+          style={{ height: "80px" }}
+          value={hint}
+          onChange={(e) => setHint(e.target.value)}
+          placeholder="Giải thích chi tiết đáp án..."
+        />
       </div>
 
       {error && <div className="qlbt-error-text">{error}</div>}

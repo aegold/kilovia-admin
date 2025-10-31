@@ -82,6 +82,13 @@ export default function QuestionEditorShell({
   };
 
   const handleSave = async (env) => {
+    // ✅ Phase 1 Fix: Validate hierarchy completeness
+    if (!hierarchy || !hierarchy.subtopic) {
+      setMessage("⚠️ Vui lòng chọn đầy đủ: Khối → Môn → Chủ đề → Chủ đề con");
+      setTimeout(() => setMessage(""), 3000);
+      return;
+    }
+
     // Save locally as draft first (if not in edit mode)
     if (!isEditMode) {
       saveDraft({
@@ -114,23 +121,24 @@ export default function QuestionEditorShell({
         const questionImage =
           env.media && env.media.length > 0 ? env.media[0].url : null;
 
-        // Build complete question detail object (full envelope)
+        // Build complete question detail object (optimized - only include fields when needed)
         const questionDetail = {
           version: env.version || 1,
           kind: env.kind || kind,
           prompt: env.prompt || "",
           media: env.media || [],
           detail: env.detail || {},
-          blocks: env.blocks || [],
-          variables: env.variables || {},
-          answers: env.answers || [],
-          explanation: env.explanation || "",
-          hints: env.hints || [],
+
+          // ✅ Only include explanation if not empty (used by IMAGE_CHOICE, MULTIPLE_FILL_IN)
+          ...(env.explanation && { explanation: env.explanation }),
+
+          // ✅ Scoring always included (backend needs this for grading)
           scoring: env.scoring || {
             full_points: 1,
             partial_points: 0,
             penalty: 0,
           },
+
           meta: {
             ...env.meta,
             hierarchy: {
@@ -268,10 +276,25 @@ export default function QuestionEditorShell({
                 setTimeout(() => setMessage(""), 2000);
               }
             }}
-            disabled={isSaving || !envelope}
+            disabled={
+              isSaving || !envelope || !hierarchy || !hierarchy.subtopic
+            }
+            title={
+              !hierarchy || !hierarchy.subtopic
+                ? "Vui lòng chọn đầy đủ: Khối → Môn → Chủ đề → Chủ đề con"
+                : isSaving
+                ? "Đang xử lý..."
+                : "Lưu câu hỏi vào hệ thống"
+            }
             style={{
-              opacity: isSaving || !envelope ? 0.6 : 1,
-              cursor: isSaving || !envelope ? "not-allowed" : "pointer",
+              opacity:
+                isSaving || !envelope || !hierarchy || !hierarchy.subtopic
+                  ? 0.6
+                  : 1,
+              cursor:
+                isSaving || !envelope || !hierarchy || !hierarchy.subtopic
+                  ? "not-allowed"
+                  : "pointer",
             }}
           >
             {isSaving
