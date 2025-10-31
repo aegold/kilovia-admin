@@ -68,10 +68,20 @@ export default function FibSinglePreview({
       )}
 
       {/* Settings info */}
-      <div className="text-xs text-gray-500 space-y-1">
-        {caseSensitive && <div>🔤 Phân biệt chữ hoa/thường</div>}
-        {!caseSensitive && <div>🔡 Không phân biệt chữ hoa/thường</div>}
-        {normalizeSpace && <div>␣ Chuẩn hóa khoảng trắng</div>}
+      <div
+        style={{
+          fontSize: "0.75rem",
+          color: "#374151",
+          marginTop: "0.5rem",
+          padding: "0.5rem",
+          backgroundColor: "#f9fafb",
+          borderRadius: "6px",
+          border: "1px solid #e5e7eb",
+        }}
+      >
+        {caseSensitive && <div>Phân biệt chữ hoa/thường</div>}
+        {!caseSensitive && <div>Không phân biệt chữ hoa/thường</div>}
+        {normalizeSpace && <div>Chuẩn hóa khoảng trắng</div>}
       </div>
     </div>
   );

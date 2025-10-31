@@ -83,6 +83,7 @@ export default function VerticalCalculationPreview({
                   width: cellWidth,
                   textAlign: "right",
                   fontWeight: "600",
+                  color: "#111827",
                 }}
               >
                 {rows[0]}
@@ -117,6 +118,7 @@ export default function VerticalCalculationPreview({
                       width: cellWidth,
                       textAlign: "right",
                       fontWeight: "600",
+                      color: "#111827",
                     }}
                   >
                     {row}
@@ -163,7 +165,8 @@ export default function VerticalCalculationPreview({
                     justifyContent: "center",
                     fontSize: "1.5rem",
                     fontWeight: "700",
-                    color: "#60a5fa",
+                    color: "#111827",
+                    backgroundColor: "transparent",
                   }}
                 >
                   ?

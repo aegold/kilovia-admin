@@ -162,7 +162,11 @@ const QuestionTable = ({
 
       case KINDS.MULTIPLE_FILL_IN:
         const answers = envelope.detail?.answers || [];
-        return answers.join(", ") || "-";
+        // Extract expression values from answer objects
+        const answerValues = answers
+          .map((ans) => ans.expression || ans.answer || "")
+          .filter((val) => val !== "");
+        return answerValues.length > 0 ? answerValues.join(", ") : "-";
 
       case KINDS.VERTICAL_CALCULATION:
         return envelope.detail?.result || "-";

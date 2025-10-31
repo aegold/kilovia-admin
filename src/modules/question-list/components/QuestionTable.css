@@ -71,8 +71,10 @@
 /* Table */
 .question-table {
   width: 100%;
+  table-layout: fixed; /* Fixed table layout for consistent column widths */
   border-collapse: collapse;
   font-size: 14px;
+  color: #333; /* Ensure default text color */
 }
 
 .question-table thead {
@@ -128,7 +130,7 @@
   color: #333;
 }
 
-/* Column widths */
+/* Column widths - Fixed widths for consistent layout */
 .col-checkbox {
   width: 40px;
   text-align: center;
@@ -141,30 +143,33 @@
 }
 
 .col-kind {
-  width: 150px;
+  width: 140px;
 }
 
 .col-prompt {
-  min-width: 250px;
-  max-width: 400px;
+  width: 275px; /* Fixed width for question content */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .col-answer {
-  min-width: 150px;
-  max-width: 250px;
+  width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .col-hierarchy {
-  min-width: 200px;
-  max-width: 300px;
+  width: 300px;
 }
 
 .col-date {
-  width: 150px;
+  width: 135px;
 }
 
 .col-actions {
-  width: 130px;
+  width: 120px;
 }
 
 /* Kind Badge */
@@ -194,7 +199,7 @@
   flex-direction: column;
   gap: 4px;
   font-size: 12px;
-  color: #555;
+  color: #333; /* Ensure text is visible */
 }
 
 .hierarchy-line {
@@ -335,6 +340,7 @@
   padding: 80px 20px;
   background: white;
   border-radius: 8px;
+  color: #333; /* Ensure text is visible */
 }
 
 .empty-icon {
@@ -357,16 +363,28 @@
 
 /* Responsive */
 @media (max-width: 1200px) {
+  .col-kind {
+    width: 110px; /* 140px * 0.78 */
+  }
+
   .col-prompt {
-    max-width: 300px;
+    width: 215px; /* 275px * 0.78 */
   }
 
   .col-answer {
-    max-width: 200px;
+    width: 78px; /* 100px * 0.78 */
   }
 
   .col-hierarchy {
-    max-width: 250px;
+    width: 235px; /* 300px * 0.78 */
+  }
+
+  .col-date {
+    width: 105px; /* 135px * 0.78 */
+  }
+
+  .col-actions {
+    width: 95px; /* 120px * 0.78 */
   }
 }
 
@@ -394,15 +412,28 @@
     font-size: 12px;
   }
 
+  /* Scale down all columns proportionally (~60% of desktop) */
   .col-kind {
-    width: 120px;
+    width: 85px; /* 140px * 0.6 */
+  }
+
+  .col-prompt {
+    width: 165px; /* 275px * 0.6 */
+  }
+
+  .col-answer {
+    width: 60px; /* 100px * 0.6 */
+  }
+
+  .col-hierarchy {
+    width: 180px; /* 300px * 0.6 */
   }
 
   .col-date {
-    width: 120px;
+    width: 80px; /* 135px * 0.6 */
   }
 
   .col-actions {
-    width: 110px;
+    width: 72px; /* 120px * 0.6 */
   }
 }
