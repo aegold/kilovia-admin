@@ -331,6 +331,20 @@ export function validateVerticalCalculation(envelope) {
     if (layout.mode === "mixed") {
       if (!Array.isArray(layout.operators)) {
         errors.push("Mixed mode phải có mảng operators");
+      } else {
+        // Check operators array length matches rows count
+        const expectedOperatorCount = layout.rows.length - 1;
+        if (layout.operators.length !== expectedOperatorCount) {
+          errors.push(
+            `Mixed mode với ${layout.rows.length} số hạng phải có ${expectedOperatorCount} operators`
+          );
+        }
+        // Check each operator is valid
+        layout.operators.forEach((op, idx) => {
+          if (!["+", "-"].includes(op)) {
+            errors.push(`Operator ${idx + 1} phải là + hoặc -`);
+          }
+        });
       }
     } else {
       if (!layout.operator || !["+", "-"].includes(layout.operator)) {

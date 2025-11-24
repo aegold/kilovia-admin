@@ -549,25 +549,28 @@ export const hierarchyService = {
   },
 
   /**
-   * Upload image file
+   * Upload image file to backend
    * @param {File} file - Image file
-   * @param {string} folder - Folder name
-   * @returns {Promise<string>} Image URL
+   * @returns {Promise<string>} Full image URL
    */
-  uploadImage: async (file, folder = "questions") => {
+  uploadImage: async (file) => {
     if (USE_MOCK) {
       return new Promise((resolve) => {
         setTimeout(() => {
+          // Mock response with placeholder
           resolve(`https://via.placeholder.com/400x300?text=${file.name}`);
         }, 500);
       });
     }
 
     try {
+      // Create FormData with file
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("folder", folder);
 
+      console.log(`📤 Uploading image: ${file.name} (${file.size} bytes)`);
+
+      // Upload to backend
       const response = await axiosInstance.post(
         `${API_BASE_URL}/upload`,
         formData,
@@ -577,9 +580,18 @@ export const hierarchyService = {
           },
         }
       );
-      return response.data;
+
+      // Backend returns object: { fileName, fileUrl, fileSize, contentType, message }
+      const { fileUrl, fileName } = response.data;
+
+      // Build full URL: http://localhost:8080/uploads/filename.png
+      const fullUrl = `${API_BASE_URL.replace("/api", "")}${fileUrl}`;
+
+      console.log(`✅ Image uploaded: ${fileName} → ${fullUrl}`);
+
+      return fullUrl;
     } catch (error) {
-      console.error("Error uploading image:", error);
+      console.error("❌ Error uploading image:", error);
       throw error;
     }
   },

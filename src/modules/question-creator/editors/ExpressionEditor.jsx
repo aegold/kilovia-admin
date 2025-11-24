@@ -14,6 +14,7 @@ export default function ExpressionEditor({
   isSaving = false,
   initialEnvelope = null,
 }) {
+  const [questionTitle, setQuestionTitle] = useState("Thực hiện bài toán sau:");
   const [operation, setOperation] = useState("multiplication");
   const [operand1, setOperand1] = useState("");
   const [operand2, setOperand2] = useState("");
@@ -30,6 +31,10 @@ export default function ExpressionEditor({
         "📥 ExpressionEditor: Loading initial envelope",
         initialEnvelope
       );
+
+      if (initialEnvelope.questionTitle) {
+        setQuestionTitle(initialEnvelope.questionTitle);
+      }
 
       if (initialEnvelope.detail?.operation) {
         setOperation(initialEnvelope.detail.operation);
@@ -97,7 +102,7 @@ export default function ExpressionEditor({
       kind: KINDS.EXPRESSION,
       prompt,
       detail,
-      extras: { explanation: hint || "" },
+      extras: { explanation: hint || "", questionTitle },
     });
 
     // Centralized validation
@@ -119,10 +124,22 @@ export default function ExpressionEditor({
       setError(e.message || "Dữ liệu không hợp lệ");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [operation, operand1, operand2, result, mode, hint]);
+  }, [questionTitle, operation, operand1, operand2, result, mode, hint]);
 
   return (
     <div className="qlbt-card">
+      <div className="qlbt-form-group">
+        <label className="qlbt-label">
+          Tiêu đề câu hỏi <span className="qlbt-required">*</span>
+        </label>
+        <input
+          className="qlbt-input"
+          value={questionTitle}
+          onChange={(e) => setQuestionTitle(e.target.value)}
+          placeholder="Nhập tiêu đề câu hỏi..."
+        />
+      </div>
+
       <div className="qlbt-form-group">
         <div
           style={{

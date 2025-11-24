@@ -10,6 +10,7 @@ export default function VerticalCalculationPreview({
   detail,
   showAnswer,
   media,
+  explanation,
 }) {
   const layout = detail?.layout || {};
   const result = detail?.result || "";
@@ -209,6 +210,40 @@ export default function VerticalCalculationPreview({
         {mode === "subtraction" && "Phép trừ theo cột"}
         {mode === "mixed" && "Phép tính cộng trừ đan xen"}
       </div>
+
+      {/* Explanation */}
+      {explanation && (
+        <div
+          style={{
+            marginTop: "1rem",
+            padding: "1rem",
+            backgroundColor: "#eff6ff",
+            border: "1px solid #3b82f6",
+            borderRadius: "8px",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "0.875rem",
+              fontWeight: "600",
+              color: "#1e40af",
+              marginBottom: "0.5rem",
+            }}
+          >
+            💡 Giải thích:
+          </div>
+          <div
+            style={{
+              fontSize: "0.875rem",
+              color: "#374151",
+              lineHeight: "1.6",
+              whiteSpace: "pre-wrap",
+            }}
+          >
+            {explanation}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

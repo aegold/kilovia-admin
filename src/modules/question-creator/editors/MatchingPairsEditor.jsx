@@ -14,6 +14,7 @@ export default function MatchingPairsEditor({
   isSaving = false,
   initialEnvelope = null,
 }) {
+  const [questionTitle, setQuestionTitle] = useState("Thực hiện bài toán sau:");
   const [prompt, setPrompt] = useState("");
   const [columns, setColumns] = useState([
     {
@@ -46,6 +47,10 @@ export default function MatchingPairsEditor({
         "📥 MatchingPairsEditor: Loading initial envelope",
         initialEnvelope
       );
+
+      if (initialEnvelope.questionTitle) {
+        setQuestionTitle(initialEnvelope.questionTitle);
+      }
 
       if (initialEnvelope.prompt) {
         setPrompt(initialEnvelope.prompt);
@@ -128,6 +133,7 @@ export default function MatchingPairsEditor({
     };
     const extras = {
       explanation: hint || "",
+      questionTitle,
     };
     const envelope = makeQuestionEnvelope({
       kind: KINDS.MATCHING_PAIRS,
@@ -155,10 +161,22 @@ export default function MatchingPairsEditor({
       setError(e.message || "Dữ liệu không hợp lệ");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [prompt, columns, pairs, allowPartialCredit, hint]);
+  }, [questionTitle, prompt, columns, pairs, allowPartialCredit, hint]);
 
   return (
     <div className="qlbt-card">
+      <div className="qlbt-form-group">
+        <label className="qlbt-label">
+          Tiêu đề câu hỏi <span className="qlbt-required">*</span>
+        </label>
+        <input
+          className="qlbt-input"
+          value={questionTitle}
+          onChange={(e) => setQuestionTitle(e.target.value)}
+          placeholder="Nhập tiêu đề câu hỏi..."
+        />
+      </div>
+
       <div className="qlbt-form-group">
         <label className="qlbt-label">Đề bài</label>
         <textarea

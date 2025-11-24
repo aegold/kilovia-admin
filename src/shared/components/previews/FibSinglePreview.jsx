@@ -10,6 +10,7 @@ export default function FibSinglePreview({
   detail,
   showAnswer,
   media,
+  explanation,
 }) {
   const answer = detail?.answer || "";
   const caseSensitive = detail?.case_sensitive || false;
@@ -83,6 +84,40 @@ export default function FibSinglePreview({
         {!caseSensitive && <div>Không phân biệt chữ hoa/thường</div>}
         {normalizeSpace && <div>Chuẩn hóa khoảng trắng</div>}
       </div>
+
+      {/* Explanation */}
+      {explanation && (
+        <div
+          style={{
+            marginTop: "1rem",
+            padding: "1rem",
+            backgroundColor: "#eff6ff",
+            border: "1px solid #3b82f6",
+            borderRadius: "8px",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "0.875rem",
+              fontWeight: "600",
+              color: "#1e40af",
+              marginBottom: "0.5rem",
+            }}
+          >
+            💡 Giải thích:
+          </div>
+          <div
+            style={{
+              fontSize: "0.875rem",
+              color: "#374151",
+              lineHeight: "1.6",
+              whiteSpace: "pre-wrap",
+            }}
+          >
+            {explanation}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

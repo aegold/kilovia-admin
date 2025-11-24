@@ -14,6 +14,7 @@ export default function VerticalCalculationEditor({
   isSaving = false,
   initialEnvelope = null,
 }) {
+  const [questionTitle, setQuestionTitle] = useState("Thực hiện bài toán sau:");
   const [operationType, setOperationType] = useState("addition"); // addition | subtraction | mixed
   const [numberOfTerms, setNumberOfTerms] = useState(2);
   const [term1, setTerm1] = useState("");
@@ -34,7 +35,11 @@ export default function VerticalCalculationEditor({
         initialEnvelope
       );
 
-      if (initialEnvelope.detail?.operationType) {
+      if (initialEnvelope.questionTitle) {
+        setQuestionTitle(initialEnvelope.questionTitle);
+      }
+
+      if (initialEnvelope.detail?.layout) {
         setOperationType(initialEnvelope.detail.operationType);
       }
 
@@ -110,6 +115,14 @@ export default function VerticalCalculationEditor({
   }, [term1, term2, term3, calculated]);
 
   const buildEnvelope = () => {
+    // Validate that we have enough terms
+    if (!term1 || !term2) {
+      throw new Error("Vui lòng nhập đầy đủ số hạng");
+    }
+    if (numberOfTerms === 3 && !term3) {
+      throw new Error("Vui lòng nhập đầy đủ 3 số hạng");
+    }
+
     const rows = [
       String(term1),
       String(term2),
@@ -137,7 +150,7 @@ export default function VerticalCalculationEditor({
       kind: KINDS.VERTICAL_CALCULATION,
       prompt,
       detail,
-      extras: { explanation: hint || "" },
+      extras: { explanation: hint || "", questionTitle },
     });
 
     // Centralized validation
@@ -160,6 +173,7 @@ export default function VerticalCalculationEditor({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    questionTitle,
     operationType,
     numberOfTerms,
     term1,
@@ -173,6 +187,18 @@ export default function VerticalCalculationEditor({
 
   return (
     <div className="qlbt-card">
+      <div className="qlbt-form-group">
+        <label className="qlbt-label">
+          Tiêu đề câu hỏi <span className="qlbt-required">*</span>
+        </label>
+        <input
+          className="qlbt-input"
+          value={questionTitle}
+          onChange={(e) => setQuestionTitle(e.target.value)}
+          placeholder="Nhập tiêu đề câu hỏi..."
+        />
+      </div>
+
       <div className="qlbt-form-group">
         <div
           style={{

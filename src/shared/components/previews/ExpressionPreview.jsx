@@ -10,6 +10,7 @@ export default function ExpressionPreview({
   detail,
   showAnswer,
   media,
+  explanation,
 }) {
   const operation = detail?.operation || "multiplication";
   const operand1 = detail?.operand1 || "";
@@ -196,6 +197,40 @@ export default function ExpressionPreview({
           >
             <span>💡</span>
             <span>Nên có hình ảnh đi kèm để gợi ý cho học sinh</span>
+          </div>
+        </div>
+      )}
+
+      {/* Explanation */}
+      {explanation && (
+        <div
+          style={{
+            marginTop: "1rem",
+            padding: "1rem",
+            backgroundColor: "#eff6ff",
+            border: "1px solid #3b82f6",
+            borderRadius: "8px",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "0.875rem",
+              fontWeight: "600",
+              color: "#1e40af",
+              marginBottom: "0.5rem",
+            }}
+          >
+            💡 Giải thích:
+          </div>
+          <div
+            style={{
+              fontSize: "0.875rem",
+              color: "#374151",
+              lineHeight: "1.6",
+              whiteSpace: "pre-wrap",
+            }}
+          >
+            {explanation}
           </div>
         </div>
       )}

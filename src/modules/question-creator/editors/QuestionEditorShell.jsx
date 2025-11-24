@@ -14,6 +14,11 @@ import { saveDraft } from "../store/drafts";
 import { hierarchyService } from "@shared/services/hierarchyService";
 import KindPicker from "../components/KindPicker";
 import { getPreviewRegistry } from "@shared/components/previewRegistry";
+import {
+  processEnvelopeImages,
+  hasImagesToUpload,
+  countTotalImages,
+} from "@shared/utils/imageUploadHelper";
 
 /**
  * Map frontend kind to backend question_type_id
@@ -48,6 +53,10 @@ export default function QuestionEditorShell({
   const [envelope, setEnvelope] = useState(null);
   const [message, setMessage] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState({
+    current: 0,
+    total: 0,
+  });
 
   // Load initial envelope in edit mode
   useEffect(() => {
@@ -103,44 +112,89 @@ export default function QuestionEditorShell({
     if (hierarchy && hierarchy.subtopic) {
       setIsSaving(true);
       const actionText = isEditMode ? "Updating" : "Saving";
-      console.log(`📦 ${actionText} question with hierarchy:`, {
-        isEditMode,
-        questionId: editingQuestionId,
-        subTopicId: hierarchy.subtopic.id,
-        questionType: kind,
-        hierarchy_metadata: {
-          grade: hierarchy.grade.gradeName,
-          subject: hierarchy.subject.subjectGradeName,
-          topic: hierarchy.topic.topicTitle,
-          subtopic: hierarchy.subtopic.subTopicTitle,
-        },
-        payload: env,
-      });
+
       try {
-        // Extract first image URL from media array
+        // 🆕 STEP 1: Check if envelope has images to upload
+        const imageCount = countTotalImages(env);
+        const needsUpload = hasImagesToUpload(env);
+
+        console.log(`📦 ${actionText} question with hierarchy:`, {
+          isEditMode,
+          questionId: editingQuestionId,
+          subTopicId: hierarchy.subtopic.id,
+          questionType: kind,
+          totalImages: imageCount,
+          needsUpload: needsUpload,
+          hierarchy_metadata: {
+            grade: hierarchy.grade.gradeName,
+            subject: hierarchy.subject.subjectGradeName,
+            topic: hierarchy.topic.topicTitle,
+            subtopic: hierarchy.subtopic.subTopicTitle,
+          },
+        });
+
+        // 🆕 STEP 2: Upload images if needed
+        let processedEnvelope = env;
+
+        if (needsUpload) {
+          setMessage("📤 Đang upload ảnh...");
+
+          try {
+            processedEnvelope = await processEnvelopeImages(
+              env,
+              (current, total) => {
+                setUploadProgress({ current, total });
+                setMessage(`📤 Đang upload ảnh ${current}/${total}...`);
+              }
+            );
+
+            setMessage("✅ Upload ảnh thành công!");
+            console.log(
+              "✅ All images uploaded, envelope updated:",
+              processedEnvelope
+            );
+          } catch (uploadError) {
+            console.error("❌ Image upload failed:", uploadError);
+            setMessage(`❌ Lỗi upload ảnh: ${uploadError.message}`);
+            setIsSaving(false);
+            setTimeout(() => setMessage(""), 5000);
+            return;
+          }
+        }
+
+        // 🆕 STEP 3: Extract first image URL from processed envelope
         const questionImage =
-          env.media && env.media.length > 0 ? env.media[0].url : null;
+          processedEnvelope.media && processedEnvelope.media.length > 0
+            ? processedEnvelope.media[0].url
+            : null;
 
-        // Build complete question detail object (optimized - only include fields when needed)
+        // Build complete question detail object
         const questionDetail = {
-          version: env.version || 1,
-          kind: env.kind || kind,
-          prompt: env.prompt || "",
-          media: env.media || [],
-          detail: env.detail || {},
+          version: processedEnvelope.version || 1,
+          kind: processedEnvelope.kind || kind,
+          prompt: processedEnvelope.prompt || "",
+          media: processedEnvelope.media || [],
+          detail: processedEnvelope.detail || {},
 
-          // ✅ Only include explanation if not empty (used by IMAGE_CHOICE, MULTIPLE_FILL_IN)
-          ...(env.explanation && { explanation: env.explanation }),
+          // ✅ Include questionTitle if present
+          ...(processedEnvelope.questionTitle && {
+            questionTitle: processedEnvelope.questionTitle,
+          }),
 
-          // ✅ Scoring always included (backend needs this for grading)
-          scoring: env.scoring || {
+          // ✅ Only include explanation if not empty
+          ...(processedEnvelope.explanation && {
+            explanation: processedEnvelope.explanation,
+          }),
+
+          // ✅ Scoring always included
+          scoring: processedEnvelope.scoring || {
             full_points: 1,
             partial_points: 0,
             penalty: 0,
           },
 
           meta: {
-            ...env.meta,
+            ...processedEnvelope.meta,
             hierarchy: {
               gradeId: hierarchy.grade.id,
               gradeName: hierarchy.grade.gradeName,
@@ -158,7 +212,8 @@ export default function QuestionEditorShell({
         const questionData = {
           subTopicId: hierarchy.subtopic.id,
           questionTypeId: getQuestionTypeId(kind),
-          questionTitle: env.prompt || "",
+          questionTitle:
+            processedEnvelope.questionTitle || "Thực hiện bài toán sau:",
           questionImage: questionImage,
           questionDetail: questionDetail,
         };
@@ -170,6 +225,7 @@ export default function QuestionEditorShell({
 
         if (isEditMode) {
           // Update existing question
+          setMessage("💾 Đang cập nhật câu hỏi...");
           await hierarchyService.updateQuestion(
             editingQuestionId,
             questionData
@@ -183,6 +239,7 @@ export default function QuestionEditorShell({
           }, 1500);
         } else {
           // Create new question
+          setMessage("💾 Đang lưu câu hỏi...");
           await hierarchyService.saveQuestion(questionData);
           console.log("✅ Save successful!");
           setMessage(
@@ -190,7 +247,7 @@ export default function QuestionEditorShell({
           );
         }
 
-        setEnvelope(env);
+        setEnvelope(processedEnvelope);
       } catch (error) {
         console.error(
           `❌ Error ${isEditMode ? "updating" : "saving"} question:`,
@@ -317,20 +374,48 @@ export default function QuestionEditorShell({
                 ? "#fef2f2"
                 : message.includes("⚠️")
                 ? "#fefce8"
+                : message.includes("📤")
+                ? "#eff6ff"
                 : "#f0fdf4",
               color: message.includes("❌")
                 ? "#991b1b"
                 : message.includes("⚠️")
                 ? "#854d0e"
+                : message.includes("📤")
+                ? "#1e40af"
                 : "#166534",
               border: message.includes("❌")
                 ? "1px solid #fecaca"
                 : message.includes("⚠️")
                 ? "1px solid #fef08a"
+                : message.includes("📤")
+                ? "1px solid #bfdbfe"
                 : "1px solid #bbf7d0",
             }}
           >
             {message}
+            {uploadProgress.total > 0 && message.includes("📤") && (
+              <div
+                style={{
+                  marginTop: "0.5rem",
+                  height: "4px",
+                  backgroundColor: "#dbeafe",
+                  borderRadius: "2px",
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    height: "100%",
+                    backgroundColor: "#3b82f6",
+                    width: `${
+                      (uploadProgress.current / uploadProgress.total) * 100
+                    }%`,
+                    transition: "width 0.3s ease",
+                  }}
+                />
+              </div>
+            )}
           </div>
         )}
 

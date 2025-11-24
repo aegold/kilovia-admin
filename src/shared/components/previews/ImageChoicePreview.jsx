@@ -10,6 +10,7 @@ export default function ImageChoicePreview({
   detail,
   showAnswer,
   media,
+  explanation,
 }) {
   const options = detail?.options || [];
   const correctOption = options.find((opt) => opt.correct);
@@ -87,6 +88,40 @@ export default function ImageChoicePreview({
       {detail?.shuffle && (
         <div className="text-xs text-gray-500 italic">
           ℹ️ Các hình ảnh sẽ được xáo trộn khi hiển thị cho học sinh
+        </div>
+      )}
+
+      {/* Explanation */}
+      {explanation && (
+        <div
+          style={{
+            marginTop: "1rem",
+            padding: "1rem",
+            backgroundColor: "#eff6ff",
+            border: "1px solid #3b82f6",
+            borderRadius: "8px",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "0.875rem",
+              fontWeight: "600",
+              color: "#1e40af",
+              marginBottom: "0.5rem",
+            }}
+          >
+            💡 Giải thích:
+          </div>
+          <div
+            style={{
+              fontSize: "0.875rem",
+              color: "#374151",
+              lineHeight: "1.6",
+              whiteSpace: "pre-wrap",
+            }}
+          >
+            {explanation}
+          </div>
         </div>
       )}
     </div>

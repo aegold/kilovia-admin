@@ -37,6 +37,7 @@ export default function PreviewPanel({ envelope, registry }) {
           prompt={envelope.prompt}
           detail={envelope.detail}
           media={envelope.media}
+          explanation={envelope.explanation}
           showAnswer={true}
         />
       </div>

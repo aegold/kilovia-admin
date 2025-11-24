@@ -10,6 +10,7 @@ export default function MultipleFillInPreview({
   detail,
   showAnswer,
   media,
+  explanation,
 }) {
   const blocks = detail?.blocks || [];
   const answers = detail?.answers || [];
@@ -101,14 +102,7 @@ export default function MultipleFillInPreview({
 
   return (
     <div className="space-y-4">
-      {/* Additional main image (if provided via media) */}
-      {media && media.length > 0 && media[0].url && (
-        <div className="qlbt-question-image">
-          <img src={media[0].url} alt={media[0].alt || "Hình minh họa"} />
-        </div>
-      )}
-
-      {/* Render all blocks */}
+      {/* Render all blocks (image is included in blocks) */}
       {blocks.map((block, index) => renderBlock(block, index))}
 
       {/* Show answers - with green boxes like MCQ */}
@@ -140,6 +134,40 @@ export default function MultipleFillInPreview({
                 <div className="qlbt-correct-badge">✓</div>
               </div>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* Explanation */}
+      {explanation && (
+        <div
+          style={{
+            marginTop: "1rem",
+            padding: "1rem",
+            backgroundColor: "#eff6ff",
+            border: "1px solid #3b82f6",
+            borderRadius: "8px",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "0.875rem",
+              fontWeight: "600",
+              color: "#1e40af",
+              marginBottom: "0.5rem",
+            }}
+          >
+            💡 Giải thích:
+          </div>
+          <div
+            style={{
+              fontSize: "0.875rem",
+              color: "#374151",
+              lineHeight: "1.6",
+              whiteSpace: "pre-wrap",
+            }}
+          >
+            {explanation}
           </div>
         </div>
       )}

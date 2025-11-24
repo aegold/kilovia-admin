@@ -58,6 +58,13 @@
  * OPTIONAL FIELDS (Only When Needed)
  * ============================================================================
  *
+ * @field {string} questionTitle - Question title (OPTIONAL)
+ *   - Used by: ALL question types
+ *   - Default: "Thực hiện bài toán sau:"
+ *   - Purpose: Title/heading shown before the question content
+ *   - Stored in database's questionTitle column
+ *   - Only included if provided
+ *
  * @field {string} explanation - Detailed explanation/hint (OPTIONAL)
  *   - Used by: image_choice, multiple_fill_in
  *   - NOT used by: mcq_single, fib_single, vertical_calculation, expression, matching_pairs
@@ -145,6 +152,11 @@ export function makeQuestionEnvelope({ kind, prompt, detail, extras = {} }) {
     // ✅ Meta always included
     meta: extras.meta || { difficulty: "easy", tags: [] },
   };
+
+  // ✅ Only include questionTitle if provided
+  if (extras.questionTitle) {
+    envelope.questionTitle = extras.questionTitle;
+  }
 
   // ✅ Only include explanation if not empty
   if (extras.explanation) {

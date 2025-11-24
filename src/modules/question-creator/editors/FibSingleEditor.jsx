@@ -15,6 +15,7 @@ export default function FibSingleEditor({
   isSaving = false,
   initialEnvelope = null,
 }) {
+  const [questionTitle, setQuestionTitle] = useState("Thực hiện bài toán sau:");
   const [prompt, setPrompt] = useState("");
   const [answer, setAnswer] = useState("");
   const [caseSensitive, setCaseSensitive] = useState(false);
@@ -31,6 +32,10 @@ export default function FibSingleEditor({
         "📥 FibSingleEditor: Loading initial envelope",
         initialEnvelope
       );
+
+      if (initialEnvelope.questionTitle) {
+        setQuestionTitle(initialEnvelope.questionTitle);
+      }
 
       if (initialEnvelope.prompt) {
         setPrompt(initialEnvelope.prompt);
@@ -85,7 +90,7 @@ export default function FibSingleEditor({
       kind: KINDS.FIB_SINGLE,
       prompt,
       detail: detailEnvelope,
-      extras: { media, explanation: hint || "" },
+      extras: { media, explanation: hint || "", questionTitle },
     });
 
     // Centralized validation
@@ -107,10 +112,30 @@ export default function FibSingleEditor({
       setError(e.message || "Dữ liệu không hợp lệ");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [prompt, answer, caseSensitive, normalizeSpace, questionImage, hint]);
+  }, [
+    questionTitle,
+    prompt,
+    answer,
+    caseSensitive,
+    normalizeSpace,
+    questionImage,
+    hint,
+  ]);
 
   return (
     <div className="qlbt-card">
+      <div className="qlbt-form-group">
+        <label className="qlbt-label">
+          Tiêu đề câu hỏi <span className="qlbt-required">*</span>
+        </label>
+        <input
+          className="qlbt-input"
+          value={questionTitle}
+          onChange={(e) => setQuestionTitle(e.target.value)}
+          placeholder="Nhập tiêu đề câu hỏi..."
+        />
+      </div>
+
       <div className="qlbt-form-group">
         <label className="qlbt-label">Đề bài</label>
         <textarea

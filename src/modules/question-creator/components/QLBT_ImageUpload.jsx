@@ -36,18 +36,27 @@ const QLBT_ImageUpload = ({
       return;
     }
 
+    // Generate unique filename
+    const timestamp = Date.now();
+    const random = Math.random().toString(36).substring(2, 8);
+    const extension = file.name.split(".").pop() || "jpg";
+    const uniqueFilename = `question-${timestamp}-${random}.${extension}`;
+
+    // Create new File object with unique name
+    const renamedFile = new File([file], uniqueFilename, { type: file.type });
+
     // Create preview URL
-    const previewUrl = URL.createObjectURL(file);
+    const previewUrl = URL.createObjectURL(renamedFile);
     setPreview(previewUrl);
 
     // Create image object for form data
     const imageData = {
-      file: file,
+      file: renamedFile, // File with unique name
       url: previewUrl,
-      name: file.name,
-      size: file.size,
-      type: file.type,
-      alt: `Hình ảnh: ${file.name}`,
+      name: uniqueFilename,
+      size: renamedFile.size,
+      type: renamedFile.type,
+      alt: `Hình ảnh: ${uniqueFilename}`,
     };
 
     // Call onChange with image data

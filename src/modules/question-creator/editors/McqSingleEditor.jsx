@@ -20,6 +20,7 @@ export default function McqSingleEditor({
   isSaving = false,
   initialEnvelope = null,
 }) {
+  const [questionTitle, setQuestionTitle] = useState("Thực hiện bài toán sau:");
   const [prompt, setPrompt] = useState("");
   const [options, setOptions] = useState(initialOptions);
   const [answer, setAnswer] = useState("A");
@@ -36,6 +37,11 @@ export default function McqSingleEditor({
         "📥 McqSingleEditor: Loading initial envelope",
         initialEnvelope
       );
+
+      // Load questionTitle
+      if (initialEnvelope.questionTitle) {
+        setQuestionTitle(initialEnvelope.questionTitle);
+      }
 
       // Load prompt
       if (initialEnvelope.prompt) {
@@ -125,7 +131,7 @@ export default function McqSingleEditor({
       kind: KINDS.MCQ_SINGLE,
       prompt,
       detail,
-      extras: { media, explanation: hint || "" },
+      extras: { media, explanation: hint || "", questionTitle },
     });
 
     // Centralized validation
@@ -147,10 +153,22 @@ export default function McqSingleEditor({
       setError(e.message || "Dữ liệu không hợp lệ");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [prompt, options, answer, shuffle, questionImage, hint]);
+  }, [questionTitle, prompt, options, answer, shuffle, questionImage, hint]);
 
   return (
     <div className="qlbt-card">
+      <div className="qlbt-form-group">
+        <label className="qlbt-label">
+          Tiêu đề câu hỏi <span className="qlbt-required">*</span>
+        </label>
+        <input
+          className="qlbt-input"
+          value={questionTitle}
+          onChange={(e) => setQuestionTitle(e.target.value)}
+          placeholder="Nhập tiêu đề câu hỏi..."
+        />
+      </div>
+
       <div className="qlbt-form-group">
         <label className="qlbt-label">
           Đề bài <span className="qlbt-required">*</span>

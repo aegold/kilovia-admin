@@ -15,6 +15,7 @@ export default function ImageChoiceEditor({
   isSaving = false,
   initialEnvelope = null,
 }) {
+  const [questionTitle, setQuestionTitle] = useState("Thực hiện bài toán sau:");
   const [prompt, setPrompt] = useState("");
   const [questionImage, setQuestionImage] = useState(null);
   const [choiceImages, setChoiceImages] = useState([null, null]);
@@ -30,6 +31,10 @@ export default function ImageChoiceEditor({
         "📥 ImageChoiceEditor: Loading initial envelope",
         initialEnvelope
       );
+
+      if (initialEnvelope.questionTitle) {
+        setQuestionTitle(initialEnvelope.questionTitle);
+      }
 
       if (initialEnvelope.prompt) {
         setPrompt(initialEnvelope.prompt);
@@ -95,7 +100,11 @@ export default function ImageChoiceEditor({
     const detail = {
       options: images.map((c, i) => ({
         id: String.fromCharCode(65 + i),
-        image: { url: c.img.url, alt: c.img.alt || "" },
+        image: {
+          url: c.img.url,
+          alt: c.img.alt || "",
+          file: c.img.file || null, // ✅ Preserve file object for upload
+        },
         correct: images[i].idx === correctChoice,
       })),
       shuffle: true,
@@ -107,6 +116,7 @@ export default function ImageChoiceEditor({
             type: "image",
             url: questionImage.url,
             alt: questionImage.alt || "",
+            file: questionImage.file || null, // ✅ Preserve file object for upload
           },
         ]
       : [];
@@ -115,7 +125,7 @@ export default function ImageChoiceEditor({
       kind: KINDS.IMAGE_CHOICE,
       prompt,
       detail,
-      extras: { media, explanation: hint || "" },
+      extras: { media, explanation: hint || "", questionTitle },
     });
 
     // Centralized validation
@@ -137,10 +147,22 @@ export default function ImageChoiceEditor({
       setError(e.message || "Dữ liệu không hợp lệ");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [prompt, questionImage, choiceImages, correctChoice, hint]);
+  }, [questionTitle, prompt, questionImage, choiceImages, correctChoice, hint]);
 
   return (
     <div className="qlbt-card">
+      <div className="qlbt-form-group">
+        <label className="qlbt-label">
+          Tiêu đề câu hỏi <span className="qlbt-required">*</span>
+        </label>
+        <input
+          className="qlbt-input"
+          value={questionTitle}
+          onChange={(e) => setQuestionTitle(e.target.value)}
+          placeholder="Nhập tiêu đề câu hỏi..."
+        />
+      </div>
+
       <div className="qlbt-form-group">
         <label className="qlbt-label">Đề bài</label>
         <textarea
