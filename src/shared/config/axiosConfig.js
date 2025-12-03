@@ -96,8 +96,8 @@ axiosInstance.interceptors.response.use(
       if (error.response.status === 401 && !originalRequest._retry) {
         // Don't retry for auth endpoints (login, refresh)
         if (
-          originalRequest.url?.includes("/auth/login") ||
-          originalRequest.url?.includes("/auth/refresh")
+          originalRequest.url?.includes("/auth/admin/login") ||
+          originalRequest.url?.includes("/auth/admin/refresh")
         ) {
           return Promise.reject(error);
         }
@@ -125,9 +125,12 @@ axiosInstance.interceptors.response.use(
           }
 
           // Call refresh endpoint directly (avoid interceptor loop)
-          const response = await axios.post(`${API_BASE_URL}/auth/refresh`, {
-            refreshToken,
-          });
+          const response = await axios.post(
+            `${API_BASE_URL}/auth/admin/refresh`,
+            {
+              refreshToken,
+            }
+          );
 
           const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
             response.data;

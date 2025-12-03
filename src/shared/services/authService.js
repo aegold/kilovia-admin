@@ -19,7 +19,7 @@ export const authService = {
    */
   login: async (username, password) => {
     try {
-      const response = await axiosInstance.post("/auth/login", {
+      const response = await axiosInstance.post("/auth/admin/login", {
         username,
         password,
       });
@@ -37,7 +37,7 @@ export const authService = {
    */
   logout: async (refreshToken) => {
     try {
-      await axiosInstance.post("/auth/logout", {
+      await axiosInstance.post("/auth/admin/logout", {
         refreshToken,
       });
     } catch (error) {
@@ -53,7 +53,7 @@ export const authService = {
    */
   refreshToken: async (refreshToken) => {
     try {
-      const response = await axiosInstance.post("/auth/refresh", {
+      const response = await axiosInstance.post("/auth/admin/refresh", {
         refreshToken,
       });
       return response.data;
@@ -69,7 +69,7 @@ export const authService = {
    */
   getProfile: async () => {
     try {
-      const response = await axiosInstance.get("/auth/me");
+      const response = await axiosInstance.get("/auth/admin/me");
       return response.data;
     } catch (error) {
       console.error("Get profile error:", error);
@@ -85,7 +85,7 @@ export const authService = {
    */
   changePassword: async (oldPassword, newPassword) => {
     try {
-      const response = await axiosInstance.post("/auth/change-password", {
+      const response = await axiosInstance.post("/auth/admin/change-password", {
         oldPassword,
         newPassword,
       });
