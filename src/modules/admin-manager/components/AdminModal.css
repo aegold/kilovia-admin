@@ -1,0 +1,261 @@
+/**
+ * AdminModal.css - Styles for Admin Create/Edit Modal
+ */
+
+/* ============ MODAL ============ */
+.admin-modal {
+  max-width: 500px;
+}
+
+.admin-modal .modal-body {
+  padding: 24px;
+}
+
+/* ============ FORM ============ */
+.admin-modal .form-group {
+  margin-bottom: 20px;
+}
+
+.admin-modal .form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.admin-modal .required {
+  color: #ef4444;
+}
+
+.admin-modal .form-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 15px;
+  color: #1f2937;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  background: #f9fafb;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.admin-modal .form-input::placeholder {
+  color: #9ca3af;
+}
+
+.admin-modal .form-input:focus {
+  outline: none;
+  border-color: #667eea;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.admin-modal .form-input:disabled {
+  background: #f3f4f6;
+  cursor: not-allowed;
+}
+
+.admin-modal .form-input.input-error {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+.admin-modal .form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+.admin-modal .field-error {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #ef4444;
+}
+
+/* ============ PASSWORD INPUT ============ */
+.admin-modal .password-input-wrapper {
+  position: relative;
+}
+
+.admin-modal .password-input-wrapper .form-input {
+  padding-right: 44px;
+}
+
+.admin-modal .password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+}
+
+.admin-modal .password-toggle:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.admin-modal .password-hint {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+/* ============ ERROR BANNER ============ */
+.form-error-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  color: #dc2626;
+  font-size: 14px;
+}
+
+/* ============ CHECKBOX ============ */
+.form-checkbox-group {
+  margin-top: 8px;
+}
+
+.form-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 14px;
+  color: #374151;
+}
+
+.form-checkbox-label input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkbox-custom {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #d1d5db;
+  border-radius: 4px;
+  background: white;
+  transition: all 0.15s;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.form-checkbox-label input:checked ~ .checkbox-custom {
+  background: #667eea;
+  border-color: #667eea;
+}
+
+.form-checkbox-label input:checked ~ .checkbox-custom::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.form-checkbox-label input:disabled ~ .checkbox-custom {
+  background: #f3f4f6;
+  cursor: not-allowed;
+}
+
+/* ============ MODAL ACTIONS ============ */
+.admin-modal .modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* ============ BUTTONS ============ */
+.admin-modal .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.admin-modal .btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.admin-modal .btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.admin-modal .btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.admin-modal .btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.admin-modal .btn-secondary:hover:not(:disabled) {
+  background: #e5e7eb;
+}
+
+/* ============ SPINNER ============ */
+.admin-modal .button-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 480px) {
+  .admin-modal .modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .admin-modal .btn {
+    width: 100%;
+    padding: 12px 20px;
+  }
+}

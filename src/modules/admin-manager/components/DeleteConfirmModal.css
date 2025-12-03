@@ -1,0 +1,177 @@
+/**
+ * DeleteConfirmModal.css - Styles for delete confirmation modal
+ */
+
+/* ============ MODAL ============ */
+.delete-confirm-modal {
+  max-width: 420px;
+  text-align: center;
+  padding: 32px;
+}
+
+/* ============ ICON ============ */
+.delete-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fee2e2;
+  border-radius: 50%;
+  font-size: 32px;
+}
+
+/* ============ CONTENT ============ */
+.delete-content h2 {
+  margin: 0 0 12px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.delete-content p {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.delete-content strong {
+  color: #374151;
+}
+
+.delete-warning {
+  margin-top: 12px !important;
+  padding: 12px;
+  background: #fef2f2;
+  border-radius: 8px;
+  color: #dc2626 !important;
+  font-size: 13px !important;
+}
+
+/* ============ ADMIN CARD ============ */
+.delete-admin-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  margin: 20px 0;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  text-align: left;
+}
+
+.delete-admin-card .admin-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #9ca3af;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.delete-admin-card .admin-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.delete-admin-card .admin-name {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 14px;
+}
+
+.delete-admin-card .admin-email {
+  font-size: 13px;
+  color: #6b7280;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ============ ACTIONS ============ */
+.delete-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.delete-actions .btn {
+  flex: 1;
+  max-width: 140px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.delete-actions .btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.delete-actions .btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.delete-actions .btn-secondary:hover:not(:disabled) {
+  background: #e5e7eb;
+}
+
+.delete-actions .btn-danger {
+  background: #ef4444;
+  color: white;
+}
+
+.delete-actions .btn-danger:hover:not(:disabled) {
+  background: #dc2626;
+}
+
+/* ============ SPINNER ============ */
+.delete-actions .button-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 480px) {
+  .delete-confirm-modal {
+    padding: 24px;
+  }
+
+  .delete-actions {
+    flex-direction: column-reverse;
+  }
+
+  .delete-actions .btn {
+    max-width: none;
+    width: 100%;
+  }
+}

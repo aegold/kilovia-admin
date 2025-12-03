@@ -18,5 +18,13 @@ export default defineConfig({
     strictPort: true, // Báo lỗi nếu port bận (thay vì tự đổi)
     host: true, // Expose ra network
     cors: true, // Enable CORS
+    proxy: {
+      // Proxy API requests to backend to avoid CORS issues in development
+      "/api": {
+        target: "http://localhost:8080",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
 });

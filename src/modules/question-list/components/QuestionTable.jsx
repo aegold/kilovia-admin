@@ -95,29 +95,25 @@ const QuestionTable = ({
     const kindMap = {
       [KINDS.MCQ_SINGLE]: {
         label: "Trắc nghiệm",
-        icon: "⭕",
         color: "#4CAF50",
       },
-      [KINDS.FIB_SINGLE]: { label: "Điền chỗ", icon: "✏️", color: "#2196F3" },
-      [KINDS.IMAGE_CHOICE]: { label: "Chọn ảnh", icon: "🖼️", color: "#FF9800" },
+      [KINDS.FIB_SINGLE]: { label: "Điền chỗ", color: "#2196F3" },
+      [KINDS.IMAGE_CHOICE]: { label: "Chọn ảnh", color: "#FF9800" },
       [KINDS.MULTIPLE_FILL_IN]: {
         label: "Điền nhiều",
-        icon: "📝",
         color: "#9C27B0",
       },
       [KINDS.VERTICAL_CALCULATION]: {
         label: "Tính dọc",
-        icon: "🔢",
         color: "#F44336",
       },
-      [KINDS.EXPRESSION]: { label: "Biểu thức", icon: "➗", color: "#00BCD4" },
+      [KINDS.EXPRESSION]: { label: "Biểu thức", color: "#00BCD4" },
       [KINDS.MATCHING_PAIRS]: {
         label: "Nối cặp",
-        icon: "🔗",
         color: "#FF5722",
       },
     };
-    return kindMap[kind] || { label: kind, icon: "❓", color: "#757575" };
+    return kindMap[kind] || { label: kind, color: "#757575" };
   };
 
   // Format date
@@ -292,7 +288,6 @@ const QuestionTable = ({
                       className="kind-badge"
                       style={{ backgroundColor: kindInfo.color }}
                     >
-                      <span className="kind-icon">{kindInfo.icon}</span>
                       <span className="kind-label">{kindInfo.label}</span>
                     </div>
                   </td>
